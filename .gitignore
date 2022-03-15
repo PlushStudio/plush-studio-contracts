@@ -1,0 +1,10 @@
+.idea
+dist
+build
+node_modules
+bin
+.env
+artifacts
+cache
+.DS_Store
+.openzeppelin

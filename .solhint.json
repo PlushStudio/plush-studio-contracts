@@ -1,0 +1,7 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "not-rely-on-time": "off",
+    "compiler-version": ["error", ">=0.6.0 <0.9.0"]
+  }
+}
