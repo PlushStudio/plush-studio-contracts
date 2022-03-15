@@ -1,9 +1,9 @@
 {
-  "name": "plush-forest-contracts",
+  "name": "plush-studio-contracts",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "git@github.com:PlushStudio/plush-forest-contracts.git"
+    "url": "git@github.com:PlushStudio/plush-studio-contracts.git"
   },
   "author": "PlushStudio",
   "license": "MIT",

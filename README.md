@@ -1,4 +1,4 @@
-# Plush Forest contracts
+# Plush Studio contracts
 
 This repository contains the source code for Ethereum contracts.
 
