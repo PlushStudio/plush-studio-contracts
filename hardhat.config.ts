@@ -3,10 +3,10 @@ import 'dotenv/config';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 import '@openzeppelin/hardhat-upgrades';
+import '@openzeppelin/hardhat-defender';
 
 const {
   NETWORK,
-  RINKEBY_API_URL,
   MUMBAI_API_URL,
   GOERLI_API_URL,
   MAINNET_API_URL,
@@ -14,33 +14,32 @@ const {
   PRIVATE_KEY,
   ETHERSCAN_API_KEY,
   POLYGONSCAN_API_KEY,
+  DEFENDER_TEAM_API_KEY,
+  DEFENDER_TEAM_API_SECRET_KEY,
 } = process.env;
 
 if (
   !NETWORK ||
-  !RINKEBY_API_URL ||
   !MUMBAI_API_URL ||
   !GOERLI_API_URL ||
   !MAINNET_API_URL ||
   !POLYGON_API_URL ||
   !PRIVATE_KEY ||
   !ETHERSCAN_API_KEY ||
-  !POLYGONSCAN_API_KEY
+  !POLYGONSCAN_API_KEY ||
+  !DEFENDER_TEAM_API_KEY ||
+  !DEFENDER_TEAM_API_SECRET_KEY
 ) {
   throw new Error('Not all variables are specified in the env file!');
 }
 
-if (
-  !['local', 'rinkeby', 'goerli', 'mumbai', 'mainnet', 'polygon'].includes(
-    NETWORK,
-  )
-) {
+if (!['local', 'goerli', 'mumbai', 'mainnet', 'polygon'].includes(NETWORK)) {
   throw new Error('Network not supported!');
 }
 
 let API_KEY = '';
 
-if (['rinkeby', 'goerli', 'mainnet'].includes(NETWORK)) {
+if (['goerli', 'mainnet'].includes(NETWORK)) {
   API_KEY = ETHERSCAN_API_KEY;
 }
 
@@ -107,7 +106,25 @@ export default {
       },
     ],
     overrides: {
-      'contracts/PlushForest.sol': {
+      'contracts/apps/forest/token/ERC721/PlushForest.sol': {
+        version: '0.8.9',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/apps/forest/PlushForestController.sol': {
+        version: '0.8.9',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      'contracts/apps/forest/PlushGetTree.sol': {
         version: '0.8.9',
         settings: {
           optimizer: {
@@ -128,10 +145,6 @@ export default {
     local: {
       url: 'http://127.0.0.1:7545',
     },
-    rinkeby: {
-      url: RINKEBY_API_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
-    },
     goerli: {
       url: GOERLI_API_URL,
       accounts: [`0x${PRIVATE_KEY}`],
@@ -151,5 +164,9 @@ export default {
   },
   etherscan: {
     apiKey: API_KEY,
+  },
+  defender: {
+    apiKey: DEFENDER_TEAM_API_KEY,
+    apiSecret: DEFENDER_TEAM_API_SECRET_KEY,
   },
 };
