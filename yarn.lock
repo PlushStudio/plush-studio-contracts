@@ -565,16 +565,16 @@
     proper-lockfile "^4.1.1"
     solidity-ast "^0.4.15"
 
-"@plushfamily/plush-protocol-contracts@^2.3.5":
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/@plushfamily/plush-protocol-contracts/-/plush-protocol-contracts-2.3.5.tgz#3ab650f3f586b27f89f5db01af3c194f615f69ab"
-  integrity sha512-RHAtQAYJEjrFLtct0UOYPhtOuyxsPXRimNW0ju0FXnKxx6ye1agXdbsREvpqbikzQ3DV/uqk3Ez91lHFWnUH8g==
+"@plushfamily/plush-protocol-contracts@^2.3.6":
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/@plushfamily/plush-protocol-contracts/-/plush-protocol-contracts-2.3.6.tgz#d43df17489546325fb85da0e52c955dd513922f5"
+  integrity sha512-QsmQZEzRCPSTgY3O9POFZR8MyhZSgccOPLapY7pGx7InLKgTFrlds42oE1TVjZ6pbQ/58+GDxzrPbC5GdZ2ieg==
   dependencies:
     "@openzeppelin/contracts" "^4.5.0"
     "@openzeppelin/contracts-upgradeable" "^4.5.2"
     "@openzeppelin/hardhat-defender" "^1.6.0"
     dotenv "^16.0.0"
-    hardhat-contract-sizer "^2.5.0"
+    hardhat-contract-sizer "^2.5.1"
 
 "@sentry/core@5.30.0":
   version "5.30.0"
@@ -2319,14 +2319,6 @@ growl@1.10.5:
   version "1.10.5"
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
   integrity sha512-qBr4OuELkhPenW6goKVXiv47US3clb3/IbuWF9KNKEijAy9oeHxU9IgzjvJhHkUzhaj7rOUD7+YGWqUjLp5oSA==
-
-hardhat-contract-sizer@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/hardhat-contract-sizer/-/hardhat-contract-sizer-2.5.0.tgz#ae0ef708efbc433a129f655827478741cba84606"
-  integrity sha512-579Bm3QjrGyInL4RuPFPV/2jLDekw+fGmeLQ85GeiBciIKPHVS3ZYuZJDrp7E9J6A4Czk+QVCRA9YPT2Svn7lQ==
-  dependencies:
-    chalk "^4.0.0"
-    cli-table3 "^0.6.0"
 
 hardhat-contract-sizer@^2.5.1:
   version "2.5.1"
