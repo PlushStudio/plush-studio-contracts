@@ -51,6 +51,15 @@ export default {
   solidity: {
     compilers: [
       {
+        version: '0.8.13',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      {
         version: '0.8.9',
         settings: {
           optimizer: {
@@ -125,7 +134,7 @@ export default {
         },
       },
       'contracts/apps/forest/PlushGetTree.sol': {
-        version: '0.8.9',
+        version: '0.8.13',
         settings: {
           optimizer: {
             enabled: true,
