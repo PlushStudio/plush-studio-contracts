@@ -1,4 +1,4 @@
-import hre from 'hardhat';
+import hre, { upgrades } from 'hardhat';
 
 import * as args from '../../../../arguments/plushForestController';
 
@@ -7,9 +7,12 @@ async function main() {
     'PlushForestController',
   );
 
-  const plushForestController = await PlushForestController.deploy(
-    args.default[0],
-    args.default[1],
+  const plushForestController = await upgrades.deployProxy(
+    PlushForestController,
+    [args.default[0], args.default[1]],
+    {
+      kind: 'uups',
+    },
   );
 
   await plushForestController.deployed();
@@ -31,7 +34,6 @@ async function main() {
       address: plushForestController.address,
       contract:
         'contracts/apps/forest/PlushForestController.sol:PlushForestController',
-      constructorArguments: [args.default[0], args.default[1]],
     });
   }
 }
