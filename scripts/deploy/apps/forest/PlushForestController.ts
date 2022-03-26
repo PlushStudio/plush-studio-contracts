@@ -31,9 +31,11 @@ async function main() {
     console.log('Verifying...\n');
 
     await hre.run('verify:verify', {
-      address: plushForestController.address,
       contract:
         'contracts/apps/forest/PlushForestController.sol:PlushForestController',
+      address: await upgrades.erc1967.getImplementationAddress(
+        plushForestController.address,
+      ),
     });
   }
 }
