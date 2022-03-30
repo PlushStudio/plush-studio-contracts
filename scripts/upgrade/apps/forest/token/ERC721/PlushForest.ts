@@ -8,7 +8,7 @@ async function main() {
 
   const plushForestNewContract = await ethers.getContractFactory('PlushForest');
 
-  // await upgrades.forceImport(proxyAddress, plushForestNEW); // uncommit if there is no file in the local cache
+  await upgrades.forceImport(proxyAddress, plushForestNewContract);
 
   console.log('Preparing proposal...');
 
