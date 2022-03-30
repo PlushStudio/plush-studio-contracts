@@ -125,7 +125,7 @@ export default {
         },
       },
       'contracts/apps/forest/PlushForestController.sol': {
-        version: '0.8.9',
+        version: '0.8.13',
         settings: {
           optimizer: {
             enabled: true,
