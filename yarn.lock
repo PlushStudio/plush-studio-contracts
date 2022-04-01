@@ -565,10 +565,10 @@
     proper-lockfile "^4.1.1"
     solidity-ast "^0.4.15"
 
-"@plushfamily/plush-protocol-contracts@^2.3.8":
-  version "2.3.8"
-  resolved "https://registry.yarnpkg.com/@plushfamily/plush-protocol-contracts/-/plush-protocol-contracts-2.3.8.tgz#960b841e7cab543fc4802f0fecc849b884194f86"
-  integrity sha512-6V4nVfyAMVWsClSQhictP6dMeJkCPMZp/jcvkaGWkX4prakS4bGmlLuklyljsEXVQdYlgPIcgy//PDkar9bRYw==
+"@plushfamily/plush-protocol-contracts@^2.3.10":
+  version "2.3.10"
+  resolved "https://registry.yarnpkg.com/@plushfamily/plush-protocol-contracts/-/plush-protocol-contracts-2.3.10.tgz#c632e3b2086876fdaec34dd7aeedd5bf41aa6ca2"
+  integrity sha512-scbRtA3hukpT8sVVaWq/jxOEyUiBvVkqc3V0/LF6I1KelWKATT4C5pGxRshg73+bVXevp2cDn0/EEmTXDH9i4A==
   dependencies:
     "@openzeppelin/contracts" "^4.5.0"
     "@openzeppelin/contracts-upgradeable" "^4.5.2"
