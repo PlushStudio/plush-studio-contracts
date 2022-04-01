@@ -1,6 +1,6 @@
 {
   "name": "@plushstudio/plush-studio-contracts",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "The project contains the development environment and the source code of the Plush Studio contracts",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@openzeppelin/hardhat-upgrades": "^1.17.0",
-    "@plushfamily/plush-protocol-contracts": "^2.3.8",
+    "@plushfamily/plush-protocol-contracts": "^2.3.10",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
     "@types/node": "^17.0.23",
