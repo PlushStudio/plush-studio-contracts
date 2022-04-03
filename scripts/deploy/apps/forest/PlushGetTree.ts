@@ -1,13 +1,17 @@
 import hre, { upgrades } from 'hardhat';
 
-import * as args from '../../../../arguments/plushGetTreeArgs';
+import { DevContractsAddresses } from '../../../../arguments/development/consts';
 
 async function main() {
   const PlushGetTree = await hre.ethers.getContractFactory('PlushGetTree');
 
   const plushGetTree = await upgrades.deployProxy(
     PlushGetTree,
-    [args.default[0], args.default[1], args.default[2]],
+    [
+      DevContractsAddresses.PLUSH_FOREST_ADDRESS,
+      DevContractsAddresses.PLUSH_COIN_ADDRESS,
+      DevContractsAddresses.PLUSH_FOREST_CONTROLLER_ADDRESS,
+    ],
     {
       kind: 'uups',
     },
