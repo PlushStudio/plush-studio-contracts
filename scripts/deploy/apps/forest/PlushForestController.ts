@@ -1,6 +1,6 @@
 import hre, { upgrades } from 'hardhat';
 
-import * as args from '../../../../arguments/plushForestController';
+import { DevContractsAddresses } from '../../../../arguments/development/consts';
 
 async function main() {
   const PlushForestController = await hre.ethers.getContractFactory(
@@ -9,7 +9,10 @@ async function main() {
 
   const plushForestController = await upgrades.deployProxy(
     PlushForestController,
-    [args.default[0], args.default[1]],
+    [
+      DevContractsAddresses.PLUSH_COIN_ADDRESS,
+      DevContractsAddresses.PLUSH_COIN_WALLETS_ADDRESS,
+    ],
     {
       kind: 'uups',
     },
