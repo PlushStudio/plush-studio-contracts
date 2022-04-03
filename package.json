@@ -12,7 +12,6 @@
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@openzeppelin/hardhat-upgrades": "^1.17.0",
-    "@plushfamily/plush-protocol-contracts": "^2.3.10",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
     "@types/node": "^17.0.23",
@@ -24,6 +23,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "ethers": "^5.6.2",
     "hardhat": "2.9.2",
+    "hardhat-contract-sizer": "^2.5.1",
     "prettier": "^2.6.2",
     "solc": "^0.8.13",
     "solhint": "^3.3.7",
@@ -34,8 +34,8 @@
     "@openzeppelin/contracts": "^4.5.0",
     "@openzeppelin/contracts-upgradeable": "^4.5.2",
     "@openzeppelin/hardhat-defender": "^1.6.0",
-    "dotenv": "^16.0.0",
-    "hardhat-contract-sizer": "^2.5.1"
+    "@plushfamily/plush-protocol-contracts": "^2.3.10",
+    "dotenv": "^16.0.0"
   },
   "scripts": {
     "lint:js": "eslint .",
