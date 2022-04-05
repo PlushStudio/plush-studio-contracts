@@ -2,8 +2,12 @@ import 'hardhat-contract-sizer';
 import 'dotenv/config';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
+import '@nomiclabs/hardhat-waffle';
+import 'solidity-coverage';
 import '@openzeppelin/hardhat-upgrades';
 import '@openzeppelin/hardhat-defender';
+import '@typechain/hardhat';
+import 'hardhat-gas-reporter';
 
 const {
   NETWORK,
@@ -177,5 +181,9 @@ export default {
   defender: {
     apiKey: DEFENDER_TEAM_API_KEY,
     apiSecret: DEFENDER_TEAM_API_SECRET_KEY,
+  },
+  gasReporter: {
+    enabled: true,
+    currency: 'USD',
   },
 };
