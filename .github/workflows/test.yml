@@ -17,6 +17,6 @@ jobs:
       - name: Install Dependencies
         run: yarn
       - name: Hardhat compile
-        run: hardhat compile
+        run: npx hardhat compile
       - name: Linter check
         run: yarn lint
