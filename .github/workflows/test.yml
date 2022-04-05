@@ -16,7 +16,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn
-      - name: Hardhat compile
-        run: npx hardhat compile
+     # - name: Hardhat compile
+     #   run: npx hardhat compile
       - name: Linter check
         run: yarn lint
