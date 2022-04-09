@@ -8,3 +8,4 @@ artifacts
 cache
 .DS_Store
 .openzeppelin
+types

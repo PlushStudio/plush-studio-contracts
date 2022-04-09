@@ -1,5 +1,5 @@
 name: CI
-on: [ push, pull_request ]
+on: [ push ]
 
 jobs:
   Test:
@@ -16,5 +16,23 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_DEBUG: false
+          envkey_NETWORK: "mumbai"
+          envkey_GOERLI_API_URL: ${{ secrets.WEB3_API_URL }}
+          envkey_MUMBAI_API_URL: ${{ secrets.WEB3_API_URL }}
+          envkey_MAINNET_API_URL: ${{ secrets.WEB3_API_URL }}
+          envkey_POLYGON_API_URL: ${{ secrets.WEB3_API_URL }}
+          envkey_PRIVATE_KEY: ${{ secrets.TEST_ACCOUNT_PRIVATE_KEY }}
+          envkey_ETHERSCAN_API_KEY: "mumbai"
+          envkey_POLYGONSCAN_API_KEY: "mumbai"
+          envkey_DEFENDER_TEAM_API_KEY: "mumbai"
+          envkey_DEFENDER_TEAM_API_SECRET_KEY: "mumbai"
+          file_name: .env
+      - name: Build
+        run: yarn build
+
       - name: Linter check
         run: yarn lint
