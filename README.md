@@ -1,6 +1,24 @@
-# Plush Studio contracts
+<p align="center">
+<a href="https://github.com/PlushStudio/plush-studio-contracts" target="blank"><img src="https://avatars.githubusercontent.com/u/74625046?s=200&v=4" width="120" alt="Plush Logo" /></a>
+</p>
 
-This repository contains the source code for Ethereum contracts.
+<p align="center">Plush Studio dev environment and contracts.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/package/@plushstudio/plush-studio-contracts" target="_blank"><img src="https://img.shields.io/npm/v/@plushstudio/plush-studio-contracts.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@plushstudio/plush-studio-contracts"><img src="https://img.shields.io/npm/l/@plushstudio/plush-studio-contracts.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/package/@plushstudio/plush-studio-contracts"><img src="https://img.shields.io/npm/dm/@plushstudio/plush-studio-contracts.svg" alt="NPM Downloads" /></a>
+
+## Description
+
+This repository contains the Plush Studio contracts.
+
+## Overview
+
+### Installation
+
+```console
+npm install @plushstudio/plush-studio-contracts
+```
 
 ## Project structure
 
