@@ -1,6 +1,7 @@
 import 'hardhat-contract-sizer';
 import 'dotenv/config';
-import '@nomiclabs/hardhat-ethers';
+import '@typechain/hardhat';
+import '@nomiclabs/hardhat-waffle';
 import '@nomiclabs/hardhat-etherscan';
 import '@openzeppelin/hardhat-upgrades';
 import '@openzeppelin/hardhat-defender';
@@ -177,5 +178,9 @@ export default {
   defender: {
     apiKey: DEFENDER_TEAM_API_KEY,
     apiSecret: DEFENDER_TEAM_API_SECRET_KEY,
+  },
+  typechain: {
+    outDir: 'types',
+    target: 'ethers-v5',
   },
 };
