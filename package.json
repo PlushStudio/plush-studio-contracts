@@ -1,6 +1,6 @@
 {
   "name": "@plushstudio/plush-studio-contracts",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "The project contains the development environment and the source code of the Plush Studio contracts",
   "main": "dist/types/index.js",
   "types": "dist/types/index.d.ts",
@@ -41,7 +41,7 @@
     "@openzeppelin/contracts": "^4.5.0",
     "@openzeppelin/contracts-upgradeable": "^4.5.2",
     "@openzeppelin/hardhat-defender": "^1.6.0",
-    "@plushfamily/plush-protocol-contracts": "^2.6.0",
+    "@plushfamily/plush-protocol-contracts": "^2.7.0",
     "dotenv": "^16.0.0"
   },
   "scripts": {
