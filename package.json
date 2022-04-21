@@ -1,6 +1,6 @@
 {
   "name": "@plushstudio/plush-studio-contracts",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "The project contains the development environment and the source code of the Plush Studio contracts",
   "main": "dist/types/index.js",
   "types": "dist/types/index.d.ts",
