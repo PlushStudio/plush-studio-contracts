@@ -11,7 +11,7 @@ async function main() {
     PlushForestController,
     [
       DevContractsAddresses.PLUSH_COIN_ADDRESS,
-      DevContractsAddresses.PLUSH_COIN_WALLETS_ADDRESS,
+      DevContractsAddresses.PLUSH_ACCOUNTS_ADDRESS,
     ],
     {
       kind: 'uups',
