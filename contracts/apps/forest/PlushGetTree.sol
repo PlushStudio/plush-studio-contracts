@@ -132,11 +132,10 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         treeMap[_type].count = treeMap[_type].count - 1;
     }
 
-
-    function concatenate(string memory a,string memory b) private pure returns (string memory){
+    function concatenate(string memory a,string memory b) private pure returns (string memory)
+    {
         return string(bytes.concat(bytes(a), " ", bytes(b)));
     }
-
 
     function stringsEquals(string memory s1, string memory s2) private pure returns (bool)
     {
