@@ -93,9 +93,19 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         return treeMap[_type].price;
     }
 
-    function getTreesTypes() external view returns(string[] memory)
+    function getTreesTypes() external view returns(string memory)
     {
-        return treesTypes;
+        string memory resultString = "";
+
+        for(uint256 i = 0; i < treesTypes.length; i++){
+            resultString = concatenate(resultString, treesTypes[i]);
+
+            if(i + 1 < treesTypes.length){
+                resultString = concatenate(resultString, ",");
+            }
+        }
+
+        return resultString;
     }
 
     function setTreeTypePrice(string memory _type, uint256 _price) external onlyRole(OPERATOR_ROLE)
@@ -121,6 +131,12 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         plushForest.safeMint(_mintAddress);
         treeMap[_type].count = treeMap[_type].count - 1;
     }
+
+
+    function concatenate(string memory a,string memory b) private pure returns (string memory){
+        return string(bytes.concat(bytes(a), " ", bytes(b)));
+    }
+
 
     function stringsEquals(string memory s1, string memory s2) private pure returns (bool)
     {
