@@ -20,12 +20,12 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_DEBUG: false
-          envkey_NETWORK: "mumbai"
-          envkey_GOERLI_API_URL: ${{ secrets.WEB3_API_URL }}
-          envkey_MUMBAI_API_URL: ${{ secrets.WEB3_API_URL }}
-          envkey_MAINNET_API_URL: ${{ secrets.WEB3_API_URL }}
-          envkey_POLYGON_API_URL: ${{ secrets.WEB3_API_URL }}
-          envkey_PRIVATE_KEY: ${{ secrets.TEST_ACCOUNT_PRIVATE_KEY }}
+          envkey_NETWORK: "cloud"
+          envkey_API_URL: ${{ secrets.WEB3_API_URL }}
+          envkey_PRIVATE_KEY: ${{ secrets.TEST_CLOUD_ACCOUNT_PRIVATE_KEY_1 }}
+          envkey_TEST_CLOUD_ACCOUNT_PRIVATE_KEY_1: ${{ secrets.TEST_CLOUD_ACCOUNT_PRIVATE_KEY_1 }}
+          envkey_TEST_CLOUD_ACCOUNT_PRIVATE_KEY_2: ${{ secrets.TEST_CLOUD_ACCOUNT_PRIVATE_KEY_2 }}
+          envkey_TEST_CLOUD_ACCOUNT_PRIVATE_KEY_3: ${{ secrets.TEST_CLOUD_ACCOUNT_PRIVATE_KEY_3 }}
           envkey_ETHERSCAN_API_KEY: "mumbai"
           envkey_POLYGONSCAN_API_KEY: "mumbai"
           envkey_DEFENDER_TEAM_API_KEY: "mumbai"
@@ -36,3 +36,6 @@ jobs:
 
       - name: Linter check
         run: yarn lint
+
+      - name: Run tests
+        run: yarn test
