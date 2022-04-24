@@ -93,7 +93,12 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     PlushGetTreeFactory = await ethers.getContractFactory('PlushGetTree');
     plushGetTree = (await upgrades.deployProxy(
       PlushGetTreeFactory,
-      [plushForest.address, plush.address, plushForestController.address],
+      [
+        plushForest.address,
+        plush.address,
+        plushAccounts.address,
+        plushForestController.address,
+      ],
       {
         kind: 'uups',
       },
@@ -255,11 +260,11 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await removeTree.wait();
 
     await expect(plushGetTree.getTreeTypeCount('TEST')).to.be.revertedWith(
-      'Not a valid tree type.',
+      'Not a valid tree type',
     );
 
     await expect(plushGetTree.getTreeTypePrice('TEST')).to.be.revertedWith(
-      'Not a valid tree type.',
+      'Not a valid tree type',
     );
   });
 
@@ -321,9 +326,12 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
     await depositToSafe.wait();
 
+    expect(
+      await plushAccounts.getWalletAmount(await signers[0].getAddress()),
+    ).to.eql(ethers.utils.parseUnits('6', 18));
+
     const buyTree = await plushGetTree.mint(
       await signers[1].getAddress(),
-      ethers.utils.parseUnits('6', 18),
       'CACAO',
     );
     await buyTree.wait();

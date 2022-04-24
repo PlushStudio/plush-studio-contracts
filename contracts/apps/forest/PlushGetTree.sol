@@ -7,6 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "@plushfamily/plush-protocol-contracts/contracts/token/ERC20/Plush.sol";
+import "@plushfamily/plush-protocol-contracts/contracts/finance/PlushAccounts.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/templates/apps/PlushController.sol";
 
 import "./token/ERC721/PlushForest.sol";
@@ -20,23 +21,26 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
 
     PlushForest plushForest;
     Plush plush;
+    PlushAccounts plushAccounts;
     PlushController plushController;
 
-    mapping(string => Tree) treeMap;
-
     struct Tree {
-        bool isValid;
         string name;
         uint256 price;
         uint256 count;
     }
 
+    mapping(string => Tree) trees;
+
+    event Purchase(address _buyer, address _recipient, string _treeType, uint _purchaseAmount);
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
-    function initialize(address _plushForestAddress, address _plushAddress, address _plushControllerAddress) initializer public {
+    function initialize(address _plushForestAddress, address _plushAddress, address _plushAccountsAddress, address _plushControllerAddress) initializer public {
         plushForest = PlushForest(_plushForestAddress);
         plush = Plush(_plushAddress);
+        plushAccounts = PlushAccounts(_plushAccountsAddress);
         plushController = PlushController(_plushControllerAddress);
 
         __Pausable_init();
@@ -57,46 +61,57 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         _unpause();
     }
 
-    function addTreeType(string memory _type, uint256 _price, uint256 _count) external onlyRole(OPERATOR_ROLE) {
-        require(!treeMap[_type].isValid, "This type of tree already exists");
-
-        treeMap[_type] = Tree(true, _type, _price, _count);
+    function validateTreeType(string memory key) public view returns (bool) {
+        if(trees[key].price > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
-    function removeTreeType(string memory _type) external onlyRole(OPERATOR_ROLE) {
-        require(treeMap[_type].isValid, "Not a valid tree type.");
-        delete treeMap[_type];
+    function addTreeType(string memory _treeType, uint256 _price, uint256 _count) external onlyRole(OPERATOR_ROLE) {
+        require(!validateTreeType(_treeType), "This type of tree already exists");
+
+        trees[_treeType] = Tree(_treeType, _price, _count);
     }
 
-    function getTreeTypeCount(string memory _type) external view returns(uint256) {
-        require(treeMap[_type].isValid, "Not a valid tree type.");
-        return treeMap[_type].count;
+    function removeTreeType(string memory _treeType) external onlyRole(OPERATOR_ROLE) {
+        require(validateTreeType(_treeType), "Not a valid tree type");
+        delete trees[_treeType];
     }
 
-    function getTreeTypePrice(string memory _type) external view returns(uint256) {
-        require(treeMap[_type].isValid, "Not a valid tree type.");
-        return treeMap[_type].price;
+    function getTreeTypeCount(string memory _treeType) external view returns(uint256) {
+        require(validateTreeType(_treeType), "Not a valid tree type");
+        return trees[_treeType].count;
     }
 
-    function setTreeTypePrice(string memory _type, uint256 _price) external onlyRole(OPERATOR_ROLE) {
-        require(treeMap[_type].isValid, "Not a valid tree type.");
+    function getTreeTypePrice(string memory _treeType) external view returns(uint256) {
+        require(validateTreeType(_treeType), "Not a valid tree type");
+        return trees[_treeType].price;
+    }
+
+    function setTreeTypePrice(string memory _treeType, uint256 _price) external onlyRole(OPERATOR_ROLE) {
+        require(validateTreeType(_treeType), "Not a valid tree type");
         require(_price > 0);
-        treeMap[_type].price = _price;
+        trees[_treeType].price = _price;
     }
 
-    function setTreeTypeCount(string memory _type, uint256 _count) external onlyRole(OPERATOR_ROLE) {
-        require(treeMap[_type].isValid, "Not a valid tree type.");
-        treeMap[_type].count = _count;
+    function setTreeTypeCount(string memory _treeType, uint256 _count) external onlyRole(OPERATOR_ROLE) {
+        require(validateTreeType(_treeType), "Not a valid tree type");
+        trees[_treeType].count = _count;
     }
 
-    function mint(address _mintAddress, uint256 _amount, string memory _type) public {
-        require(treeMap[_type].isValid, "Not a valid tree type.");
-        require(treeMap[_type].count > 0, "The trees are over.");
-        require(_amount == treeMap[_type].price, "Minting fee");
+    function mint(address _mintAddress, string memory _treeType) public {
+        require(validateTreeType(_treeType), "Not a valid tree type");
+        require(trees[_treeType].count > 0, "The trees are over");
+        require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "There are not enough tokens in your PlushAccounts account");
 
-        plushController.decreaseWalletAmountTrans(msg.sender, _amount);
+        plushController.decreaseWalletAmountTrans(msg.sender, trees[_treeType].price);
         plushForest.safeMint(_mintAddress);
-        treeMap[_type].count = treeMap[_type].count - 1;
+        trees[_treeType].count -= 1;
+
+        emit Purchase(msg.sender, _mintAddress, _treeType, trees[_treeType].price);
     }
 
     function _authorizeUpgrade(address newImplementation)
