@@ -10,6 +10,7 @@ async function main() {
     [
       DevContractsAddresses.PLUSH_FOREST_ADDRESS,
       DevContractsAddresses.PLUSH_COIN_ADDRESS,
+      DevContractsAddresses.PLUSH_ACCOUNTS_ADDRESS,
       DevContractsAddresses.PLUSH_FOREST_CONTROLLER_ADDRESS,
     ],
     {
