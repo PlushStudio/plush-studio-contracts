@@ -37,6 +37,9 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
 
     mapping(string => Tree) private trees;
 
+    /**
+     * @dev Roles definitions
+     */
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
