@@ -22,9 +22,8 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
 
     /// @notice Emitted when a tree is bought
     event TreeBought(
-        address buyer,
-        address recipient,
-        string treeType,
+        address indexed buyer,
+        address indexed recipient,
         uint256 purchaseAmount
     );
 
