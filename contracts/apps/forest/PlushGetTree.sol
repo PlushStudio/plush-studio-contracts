@@ -15,24 +15,31 @@ import "./token/ERC721/PlushForest.sol";
 /// @custom:security-contact security@plush.family
 contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
 
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
-    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
-
     PlushForest plushForest;
     Plush plush;
     PlushAccounts plushAccounts;
     PlushController plushController;
 
+    /// @notice Emitted when a tree is bought
+    event TreeBought(
+        address buyer,
+        address recipient,
+        string treeType,
+        uint256 purchaseAmount
+    );
+
+    // Trees available for purchase
     struct Tree {
-        string name;
+        string treeType;
         uint256 price;
         uint256 count;
     }
 
-    mapping(string => Tree) trees;
+    mapping(string => Tree) private trees;
 
-    event Purchase(address _buyer, address _recipient, string _treeType, uint _purchaseAmount);
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
@@ -102,7 +109,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         trees[_treeType].count = _count;
     }
 
-    function mint(address _mintAddress, string memory _treeType) public {
+    function buyTree(string memory _treeType, address _mintAddress) public {
         require(validateTreeType(_treeType), "Not a valid tree type");
         require(trees[_treeType].count > 0, "The trees are over");
         require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "There are not enough tokens in your PlushAccounts account");
@@ -111,7 +118,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         plushForest.safeMint(_mintAddress);
         trees[_treeType].count -= 1;
 
-        emit Purchase(msg.sender, _mintAddress, _treeType, trees[_treeType].price);
+        emit TreeBought(msg.sender, _mintAddress, _treeType, trees[_treeType].price);
     }
 
     function _authorizeUpgrade(address newImplementation)
