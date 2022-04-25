@@ -33,9 +33,10 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         string treeType;
         uint256 price;
         uint256 count;
+        bool exists;
     }
 
-    mapping(string => Tree) private trees;
+    mapping(string => Tree) public trees;
 
     /**
      * @dev Roles definitions
@@ -72,7 +73,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     }
 
     function validateTreeType(string memory key) public view returns (bool) {
-        if(trees[key].price > 0){
+        if(trees[key].exists){
             return true;
         }
         else{
@@ -83,12 +84,23 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function addTreeType(string memory _treeType, uint256 _price, uint256 _count) external onlyRole(OPERATOR_ROLE) {
         require(!validateTreeType(_treeType), "This type of tree already exists");
 
-        trees[_treeType] = Tree(_treeType, _price, _count);
+        Tree memory addNewTree = Tree({
+        treeType: _treeType,
+        price: _price,
+        count: _count,
+        exists: true
+        });
+
+        trees[_treeType] = addNewTree;
     }
 
     function removeTreeType(string memory _treeType) external onlyRole(OPERATOR_ROLE) {
         require(validateTreeType(_treeType), "Not a valid tree type");
         delete trees[_treeType];
+    }
+
+    function getTreeTypeInfo(string memory _treeType) public view returns (Tree memory info) {
+        return trees[_treeType];
     }
 
     function getTreeTypeCount(string memory _treeType) external view returns(uint256) {
@@ -103,7 +115,6 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
 
     function setTreeTypePrice(string memory _treeType, uint256 _price) external onlyRole(OPERATOR_ROLE) {
         require(validateTreeType(_treeType), "Not a valid tree type");
-        require(_price > 0);
         trees[_treeType].price = _price;
     }
 
