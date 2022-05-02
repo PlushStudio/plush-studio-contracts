@@ -24,19 +24,19 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     event TreeBought(
         address indexed buyer,
         address indexed recipient,
-        string treeType,
+        bytes32 treeType,
         uint256 purchaseAmount
     );
 
     // Trees available for purchase
     struct Tree {
-        string treeType;
+        bytes32 treeType;
         uint256 price;
         uint256 count;
         bool exists;
     }
 
-    mapping(string => Tree) public trees;
+    mapping(bytes32 => Tree) public trees;
 
     /**
      * @dev Roles definitions
@@ -72,14 +72,14 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         _unpause();
     }
 
-    function isTreeExist(string memory key) private view returns (bool) {
+    function isTreeExist(bytes32 key) private view returns (bool) {
         if(trees[key].exists){
             return true;
         }
         return false;
     }
 
-    function addTreeType(string memory _treeType, uint256 _price, uint256 _count) external onlyRole(OPERATOR_ROLE) {
+    function addTreeType(bytes32 _treeType, uint256 _price, uint256 _count) external onlyRole(OPERATOR_ROLE) {
         require(!isTreeExist(_treeType), "This type of tree already exists");
 
         Tree memory addNewTree = Tree({
@@ -92,36 +92,36 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         trees[_treeType] = addNewTree;
     }
 
-    function removeTreeType(string memory _treeType) external onlyRole(OPERATOR_ROLE) {
+    function removeTreeType(bytes32 _treeType) external onlyRole(OPERATOR_ROLE) {
         require(isTreeExist(_treeType), "Not a valid tree type");
         delete trees[_treeType];
     }
 
-    function getTreeTypeInfo(string memory _treeType) public view returns (Tree memory info) {
+    function getTreeTypeInfo(bytes32 _treeType) public view returns (Tree memory info) {
         return trees[_treeType];
     }
 
-    function getTreeTypeCount(string memory _treeType) external view returns(uint256) {
+    function getTreeTypeCount(bytes32 _treeType) external view returns(uint256) {
         require(isTreeExist(_treeType), "Not a valid tree type");
         return trees[_treeType].count;
     }
 
-    function getTreeTypePrice(string memory _treeType) external view returns(uint256) {
+    function getTreeTypePrice(bytes32 _treeType) external view returns(uint256) {
         require(isTreeExist(_treeType), "Not a valid tree type");
         return trees[_treeType].price;
     }
 
-    function setTreeTypePrice(string memory _treeType, uint256 _price) external onlyRole(OPERATOR_ROLE) {
+    function setTreeTypePrice(bytes32 _treeType, uint256 _price) external onlyRole(OPERATOR_ROLE) {
         require(isTreeExist(_treeType), "Not a valid tree type");
         trees[_treeType].price = _price;
     }
 
-    function setTreeTypeCount(string memory _treeType, uint256 _count) external onlyRole(OPERATOR_ROLE) {
+    function setTreeTypeCount(bytes32 _treeType, uint256 _count) external onlyRole(OPERATOR_ROLE) {
         require(isTreeExist(_treeType), "Not a valid tree type");
         trees[_treeType].count = _count;
     }
 
-    function buyTree(string memory _treeType, address _mintAddress) public {
+    function buyTree(bytes32 _treeType, address _mintAddress) public {
         require(isTreeExist(_treeType), "Not a valid tree type");
         require(trees[_treeType].count > 0, "The trees are over");
         require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "There are not enough tokens in your PlushAccounts account");
