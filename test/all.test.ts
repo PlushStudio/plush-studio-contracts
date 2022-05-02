@@ -181,43 +181,6 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     expect(await plushForest.totalSupply()).to.eql(ethers.constants.One);
   });
 
-  it('PlushForest -> Check pause contract', async () => {
-    const pauseContract = await plushForest.pause();
-    await pauseContract.wait();
-    expect(await plushForest.paused()).to.eql(true);
-    const onpauseContract = await plushForest.unpause();
-    await onpauseContract.wait();
-  });
-
-  it('PlushForest -> Check upgrade contract', async () => {
-    const plushForestNEW = (await upgrades.upgradeProxy(
-      plushForest.address,
-      PlushForestFactory,
-      { kind: 'uups' },
-    )) as PlushForest;
-    await plushForestNEW.deployed();
-    expect(plushForestNEW.address).to.eq(plushForest.address);
-    expect(await plushForest.totalSupply()).to.eql(ethers.constants.One);
-  });
-
-  it('PlushGetTree -> Checking role assignments', async () => {
-    expect(
-      await plushGetTree.hasRole(
-        ethers.constants.HashZero,
-        await signers[0].getAddress(),
-      ),
-    ).to.eql(true); // ADMIN role
-    expect(
-      await plushGetTree.hasRole(OPERATOR_ROLE, await signers[0].getAddress()),
-    ).to.eql(true);
-    expect(
-      await plushGetTree.hasRole(PAUSER_ROLE, await signers[0].getAddress()),
-    ).to.eql(true);
-    expect(
-      await plushGetTree.hasRole(UPGRADER_ROLE, await signers[0].getAddress()),
-    ).to.eql(true);
-  });
-
   it('PlushGetTree -> Add trees', async () => {
     const addCacaoTree = await plushGetTree.addTreeType(
       cacaoTree,
@@ -266,6 +229,43 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await expect(plushGetTree.getTreeTypePrice(testTree)).to.be.revertedWith(
       'Not a valid tree type',
     );
+  });
+
+  it('PlushForest -> Check pause contract', async () => {
+    const pauseContract = await plushForest.pause();
+    await pauseContract.wait();
+    expect(await plushForest.paused()).to.eql(true);
+    const onpauseContract = await plushForest.unpause();
+    await onpauseContract.wait();
+  });
+
+  it('PlushForest -> Check upgrade contract', async () => {
+    const plushForestNEW = (await upgrades.upgradeProxy(
+      plushForest.address,
+      PlushForestFactory,
+      { kind: 'uups' },
+    )) as PlushForest;
+    await plushForestNEW.deployed();
+    expect(plushForestNEW.address).to.eq(plushForest.address);
+    expect(await plushForest.totalSupply()).to.eql(ethers.constants.One);
+  });
+
+  it('PlushGetTree -> Checking role assignments', async () => {
+    expect(
+      await plushGetTree.hasRole(
+        ethers.constants.HashZero,
+        await signers[0].getAddress(),
+      ),
+    ).to.eql(true); // ADMIN role
+    expect(
+      await plushGetTree.hasRole(OPERATOR_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
+    expect(
+      await plushGetTree.hasRole(PAUSER_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
+    expect(
+      await plushGetTree.hasRole(UPGRADER_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
   });
 
   it('PlushGetTree -> Change tree count', async () => {

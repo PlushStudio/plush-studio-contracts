@@ -24,7 +24,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     event TreeBought(
         address indexed buyer,
         address indexed recipient,
-        bytes32 treeType,
+        bytes32 indexed treeType,
         uint256 purchaseAmount
     );
 
@@ -124,7 +124,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function buyTree(bytes32 _treeType, address _mintAddress) public {
         require(isTreeExist(_treeType), "Not a valid tree type");
         require(trees[_treeType].count > 0, "The trees are over");
-        require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "There are not enough tokens in your PlushAccounts account");
+        require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "There are not enough PLSH tokens in your PlushAccounts account");
 
         plushController.decreaseWalletAmountTrans(msg.sender, trees[_treeType].price);
         plushForest.safeMint(_mintAddress);
