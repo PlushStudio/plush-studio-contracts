@@ -5,8 +5,8 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 
-import "@plushfamily/plush-protocol-contracts/contracts/token/ERC20/Plush.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/finance/PlushAccounts.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/templates/apps/PlushController.sol";
 
@@ -15,8 +15,10 @@ import "./token/ERC721/PlushForest.sol";
 /// @custom:security-contact security@plush.family
 contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
 
+    using SafeERC20Upgradeable for IERC20;
+
     PlushForest plushForest;
-    Plush plush;
+    IERC20 plush;
     PlushAccounts plushAccounts;
     PlushController plushController;
 
@@ -50,7 +52,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
 
     function initialize(address _plushForestAddress, address _plushAddress, address _plushAccountsAddress, address _plushControllerAddress) initializer public {
         plushForest = PlushForest(_plushForestAddress);
-        plush = Plush(_plushAddress);
+        plush = ERC20(_plushAddress);
         plushAccounts = PlushAccounts(_plushAccountsAddress);
         plushController = PlushController(_plushControllerAddress);
 
