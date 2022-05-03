@@ -116,7 +116,6 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       PlushGetTreeFactory,
       [
         plushForest.address,
-        plush.address,
         plushAccounts.address,
         plushForestController.address,
       ],

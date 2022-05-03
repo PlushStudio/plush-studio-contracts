@@ -5,7 +5,6 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 
 import "@plushfamily/plush-protocol-contracts/contracts/finance/PlushAccounts.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/templates/apps/PlushController.sol";
@@ -14,13 +13,9 @@ import "./token/ERC721/PlushForest.sol";
 
 /// @custom:security-contact security@plush.family
 contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
-
-    using SafeERC20Upgradeable for IERC20;
-
-    PlushForest plushForest;
-    IERC20 plush;
-    PlushAccounts plushAccounts;
-    PlushController plushController;
+    PlushForest immutable public plushForest;
+    PlushAccounts immutable public plushAccounts;
+    PlushController immutable public plushController;
 
     /// @notice Emitted when a tree is bought
     event TreeBought(
@@ -50,9 +45,8 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
-    function initialize(address _plushForestAddress, address _plushAddress, address _plushAccountsAddress, address _plushControllerAddress) initializer public {
+    function initialize(address _plushForestAddress, address _plushAccountsAddress, address _plushControllerAddress) initializer public {
         plushForest = PlushForest(_plushForestAddress);
-        plush = ERC20(_plushAddress);
         plushAccounts = PlushAccounts(_plushAccountsAddress);
         plushController = PlushController(_plushControllerAddress);
 
@@ -115,7 +109,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function buyTree(bytes32 _treeType, address _mintAddress) public {
         require(trees[_treeType].exists, "Not a valid tree type");
         require(trees[_treeType].count > 0, "The trees are over");
-        require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "There are not enough PLSH tokens in your PlushAccounts account");
+        require(plushAccounts.getWalletAmount(msg.sender) >= trees[_treeType].price, "Not enough PLSH tokens in PlushAccounts");
 
         plushController.decreaseWalletAmountTrans(msg.sender, trees[_treeType].price);
         plushForest.safeMint(_mintAddress);
