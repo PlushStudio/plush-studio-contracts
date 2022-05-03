@@ -13,9 +13,9 @@ import "./token/ERC721/PlushForest.sol";
 
 /// @custom:security-contact security@plush.family
 contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
-    PlushForest public plushForest;
-    PlushAccounts public plushAccounts;
-    PlushController public plushController;
+    PlushForest private plushForest;
+    PlushAccounts private plushAccounts;
+    PlushController private plushController;
 
     /// @notice Emitted when a tree is bought
     event TreeBought(
