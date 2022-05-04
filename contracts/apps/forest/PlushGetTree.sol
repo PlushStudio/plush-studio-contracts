@@ -97,6 +97,16 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     }
 
     /**
+     * @notice Set tree type count
+     * @param treeType Tree type in bytes32
+     * @param count Count of trees
+     */
+    function setTreeTypeCount(bytes32 treeType, uint256 count) external onlyRole(OPERATOR_ROLE) {
+        require(trees[treeType].exists, "Not a valid tree type");
+        trees[treeType].count = count;
+    }
+
+    /**
      * @notice Get tree type price
      * @param treeType Tree type in bytes32
      * @return The cost of a tree of a given type in wei
@@ -115,16 +125,6 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function setTreeTypePrice(bytes32 treeType, uint256 price) external onlyRole(OPERATOR_ROLE) {
         require(trees[treeType].exists, "Not a valid tree type");
         trees[treeType].price = price;
-    }
-
-    /**
-     * @notice Set tree type count
-     * @param treeType Tree type in bytes32
-     * @param count Count of trees
-     */
-    function setTreeTypeCount(bytes32 treeType, uint256 count) external onlyRole(OPERATOR_ROLE) {
-        require(trees[treeType].exists, "Not a valid tree type");
-        trees[treeType].count = count;
     }
 
     /**
