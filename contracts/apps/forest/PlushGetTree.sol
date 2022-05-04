@@ -9,29 +9,14 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/finance/PlushAccounts.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/templates/apps/PlushController.sol";
 
+import "./IPlushGetTree.sol";
 import "./token/ERC721/PlushForest.sol";
 
 /// @custom:security-contact security@plush.family
-contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
+contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable, IPlushGetTree {
     PlushForest private plushForest;
     PlushAccounts private plushAccounts;
     PlushController private plushController;
-
-    /// @notice Emitted when a tree is bought
-    event TreeBought(
-        address indexed buyer,
-        address indexed recipient,
-        bytes32 indexed treeType,
-        uint256 purchaseAmount
-    );
-
-    // Trees available for purchase
-    struct Tree {
-        bytes32 treeType;
-        uint256 price;
-        uint256 count;
-        bool exists;
-    }
 
     mapping(bytes32 => Tree) public trees;
 
