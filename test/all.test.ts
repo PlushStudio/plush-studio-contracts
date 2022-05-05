@@ -9,6 +9,25 @@ import {
 
 import { PlushForest, PlushForestController, PlushGetTree } from '../types';
 
+const MINTER_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('MINTER_ROLE'),
+);
+const PAUSER_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('PAUSER_ROLE'),
+);
+const UPGRADER_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('UPGRADER_ROLE'),
+);
+const OPERATOR_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('OPERATOR_ROLE'),
+);
+
+const cacaoTree = ethers.utils.formatBytes32String('CACAO');
+const caobaTree = ethers.utils.formatBytes32String('CAOBA');
+const guabaTree = ethers.utils.formatBytes32String('GUABA');
+const shihuahuacoTree = ethers.utils.formatBytes32String('SHIHUAHUACO');
+const testTree = ethers.utils.formatBytes32String('TEST');
+
 describe('Launching the testing of the Plush Studio contracts', () => {
   let signers: Signer[];
 
@@ -93,7 +112,11 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     PlushGetTreeFactory = await ethers.getContractFactory('PlushGetTree');
     plushGetTree = (await upgrades.deployProxy(
       PlushGetTreeFactory,
-      [plushForest.address, plush.address, plushForestController.address],
+      [
+        plushForest.address,
+        plushAccounts.address,
+        plushForestController.address,
+      ],
       {
         kind: 'uups',
       },
@@ -125,37 +148,25 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       ),
     ).to.eql(true); // ADMIN role
     expect(
-      await plushForest.hasRole(
-        '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6',
-        await signers[0].getAddress(),
-      ),
-    ).to.eql(true); // MINTER role
-    expect(
-      await plushForest.hasRole(
-        '0x65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a',
-        await signers[0].getAddress(), // PAUSER role
-      ),
+      await plushForest.hasRole(MINTER_ROLE, await signers[0].getAddress()),
     ).to.eql(true);
     expect(
-      await plushForest.hasRole(
-        '0x189ab7a9244df0848122154315af71fe140f3db0fe014031783b0946b8c9d2e3',
-        await signers[0].getAddress(), // UPGRADER role
-      ),
+      await plushForest.hasRole(PAUSER_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
+    expect(
+      await plushForest.hasRole(UPGRADER_ROLE, await signers[0].getAddress()),
     ).to.eql(true);
   });
 
   it('PlushForest -> Grant MINTER role for PlushGetTree contract', async () => {
     const grantMinterRole = await plushForest.grantRole(
-      '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', // MINTER role
+      MINTER_ROLE,
       plushGetTree.address,
     );
     await grantMinterRole.wait();
-    expect(
-      await plushForest.hasRole(
-        '0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', // MINTER role
-        plushGetTree.address,
-      ),
-    ).to.eql(true);
+    expect(await plushForest.hasRole(MINTER_ROLE, plushGetTree.address)).to.eql(
+      true,
+    );
   });
 
   it('PlushForest -> Check minting from deployer address', async () => {
@@ -165,6 +176,56 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       ethers.constants.One,
     );
     expect(await plushForest.totalSupply()).to.eql(ethers.constants.One);
+  });
+
+  it('PlushGetTree -> Add trees', async () => {
+    const addCacaoTree = await plushGetTree.addTreeType(
+      cacaoTree,
+      ethers.utils.parseUnits('5', 18),
+      500,
+    );
+    await addCacaoTree.wait();
+
+    const addCaobaTree = await plushGetTree.addTreeType(
+      caobaTree,
+      ethers.utils.parseUnits('4', 18),
+      400,
+    );
+    await addCaobaTree.wait();
+
+    const addGuabaTree = await plushGetTree.addTreeType(
+      guabaTree,
+      ethers.utils.parseUnits('3', 18),
+      300,
+    );
+    await addGuabaTree.wait();
+
+    const addShihuahuacoTree = await plushGetTree.addTreeType(
+      shihuahuacoTree,
+      ethers.utils.parseUnits('2', 18),
+      200,
+    );
+    await addShihuahuacoTree.wait();
+
+    const addTestTree = await plushGetTree.addTreeType(
+      testTree,
+      ethers.utils.parseUnits('1', 18),
+      100,
+    );
+    await addTestTree.wait();
+  });
+
+  it('PlushGetTree -> Remove test tree', async () => {
+    const removeTree = await plushGetTree.removeTreeType(testTree);
+    await removeTree.wait();
+
+    await expect(plushGetTree.getTreeTypeCount(testTree)).to.be.revertedWith(
+      'Not a valid tree type',
+    );
+
+    await expect(plushGetTree.getTreeTypePrice(testTree)).to.be.revertedWith(
+      'Not a valid tree type',
+    );
   });
 
   it('PlushForest -> Check pause contract', async () => {
@@ -194,116 +255,60 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       ),
     ).to.eql(true); // ADMIN role
     expect(
-      await plushGetTree.hasRole(
-        '0x97667070c54ef182b0f5858b034beac1b6f3089aa2d3188bb1e8929f4fa9b929',
-        await signers[0].getAddress(),
-      ),
-    ).to.eql(true); // OPERATOR role
-    expect(
-      await plushGetTree.hasRole(
-        '0x65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a',
-        await signers[0].getAddress(), // PAUSER role
-      ),
+      await plushGetTree.hasRole(OPERATOR_ROLE, await signers[0].getAddress()),
     ).to.eql(true);
     expect(
-      await plushGetTree.hasRole(
-        '0x189ab7a9244df0848122154315af71fe140f3db0fe014031783b0946b8c9d2e3',
-        await signers[0].getAddress(), // UPGRADER role
-      ),
+      await plushGetTree.hasRole(PAUSER_ROLE, await signers[0].getAddress()),
     ).to.eql(true);
-  });
-
-  it('PlushGetTree -> Add trees', async () => {
-    const addCacaoTree = await plushGetTree.addTreeType(
-      'CACAO',
-      ethers.utils.parseUnits('5', 18),
-      500,
-    );
-    await addCacaoTree.wait();
-
-    const addCaobaTree = await plushGetTree.addTreeType(
-      'CAOBA',
-      ethers.utils.parseUnits('4', 18),
-      400,
-    );
-    await addCaobaTree.wait();
-
-    const addGuabaTree = await plushGetTree.addTreeType(
-      'GUABA',
-      ethers.utils.parseUnits('3', 18),
-      300,
-    );
-    await addGuabaTree.wait();
-
-    const addShihuahuacoTree = await plushGetTree.addTreeType(
-      'SHIHUAHUACO',
-      ethers.utils.parseUnits('2', 18),
-      200,
-    );
-    await addShihuahuacoTree.wait();
-
-    const addTestTree = await plushGetTree.addTreeType(
-      'TEST',
-      ethers.utils.parseUnits('1', 18),
-      100,
-    );
-    await addTestTree.wait();
-  });
-
-  it('PlushGetTree -> Remove test tree', async () => {
-    const removeTree = await plushGetTree.removeTreeType('TEST');
-    await removeTree.wait();
-
-    await expect(plushGetTree.getTreeTypeCount('TEST')).to.be.revertedWith(
-      'Not a valid tree type.',
-    );
-
-    await expect(plushGetTree.getTreeTypePrice('TEST')).to.be.revertedWith(
-      'Not a valid tree type.',
-    );
+    expect(
+      await plushGetTree.hasRole(UPGRADER_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
   });
 
   it('PlushGetTree -> Change tree count', async () => {
-    const changeCacaoCount = await plushGetTree.setTreeTypeCount('CACAO', 600);
+    const changeCacaoCount = await plushGetTree.setTreeTypeCount(
+      cacaoTree,
+      600,
+    );
     await changeCacaoCount.wait();
 
-    expect(await plushGetTree.getTreeTypeCount('CACAO')).to.eql(
+    expect(await plushGetTree.getTreeTypeCount(cacaoTree)).to.eql(
       BigNumber.from(600),
     );
   });
 
   it('PlushGetTree -> Change tree price', async () => {
     const changeCacaoCount = await plushGetTree.setTreeTypePrice(
-      'CACAO',
+      cacaoTree,
       ethers.utils.parseUnits('6', 18),
     );
     await changeCacaoCount.wait();
 
-    expect(await plushGetTree.getTreeTypePrice('CACAO')).to.eql(
+    expect(await plushGetTree.getTreeTypePrice(cacaoTree)).to.eql(
       ethers.utils.parseUnits('6', 18),
     );
   });
 
   it('PlushGetTree -> Validate other trees count', async () => {
-    expect(await plushGetTree.getTreeTypeCount('CAOBA')).to.eql(
+    expect(await plushGetTree.getTreeTypeCount(caobaTree)).to.eql(
       BigNumber.from(400),
     );
-    expect(await plushGetTree.getTreeTypeCount('GUABA')).to.eql(
+    expect(await plushGetTree.getTreeTypeCount(guabaTree)).to.eql(
       BigNumber.from(300),
     );
-    expect(await plushGetTree.getTreeTypeCount('SHIHUAHUACO')).to.eql(
+    expect(await plushGetTree.getTreeTypeCount(shihuahuacoTree)).to.eql(
       BigNumber.from(200),
     );
   });
 
   it('PlushGetTree -> Validate other trees price', async () => {
-    expect(await plushGetTree.getTreeTypePrice('CAOBA')).to.eql(
+    expect(await plushGetTree.getTreeTypePrice(caobaTree)).to.eql(
       ethers.utils.parseUnits('4', 18),
     );
-    expect(await plushGetTree.getTreeTypePrice('GUABA')).to.eql(
+    expect(await plushGetTree.getTreeTypePrice(guabaTree)).to.eql(
       ethers.utils.parseUnits('3', 18),
     );
-    expect(await plushGetTree.getTreeTypePrice('SHIHUAHUACO')).to.eql(
+    expect(await plushGetTree.getTreeTypePrice(shihuahuacoTree)).to.eql(
       ethers.utils.parseUnits('2', 18),
     );
   });
@@ -321,14 +326,17 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
     await depositToSafe.wait();
 
-    const buyTree = await plushGetTree.mint(
+    expect(
+      await plushAccounts.getWalletAmount(await signers[0].getAddress()),
+    ).to.eql(ethers.utils.parseUnits('6', 18));
+
+    const buyTree = await plushGetTree.buyTree(
+      cacaoTree,
       await signers[1].getAddress(),
-      ethers.utils.parseUnits('6', 18),
-      'CACAO',
     );
     await buyTree.wait();
 
-    expect(await plushGetTree.getTreeTypeCount('CACAO')).to.eql(
+    expect(await plushGetTree.getTreeTypeCount(cacaoTree)).to.eql(
       BigNumber.from(599),
     );
 
