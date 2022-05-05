@@ -32,6 +32,11 @@ interface IPlushGetTree {
     function removeTreeType(bytes32 treeType) external;
 
     /**
+     * @notice Get all types in string
+     */
+    function getTreesTypes() external view returns(string memory);
+
+    /**
      * @notice Get tree info
      * @param treeType Tree type in bytes32
      */
