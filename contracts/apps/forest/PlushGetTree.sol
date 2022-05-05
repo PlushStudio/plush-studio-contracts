@@ -86,7 +86,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     }
 
     /**
-     * @notice Get all types in string and bytes32
+     * @notice Get all types in string
      */
     function getTreesTypes() external view returns(string memory)
     {
