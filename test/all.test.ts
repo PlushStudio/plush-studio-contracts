@@ -22,13 +22,11 @@ const OPERATOR_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('OPERATOR_ROLE'),
 );
 
-const cacaoTree = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('CACAO'));
-const caobaTree = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('CAOBA'));
-const guabaTree = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('GUABA'));
-const shihuahuacoTree = ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('SHIHUAHUACO'),
-);
-const testTree = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('TEST'));
+const cacaoTree = ethers.utils.formatBytes32String('CACAO');
+const caobaTree = ethers.utils.formatBytes32String('CAOBA');
+const guabaTree = ethers.utils.formatBytes32String('GUABA');
+const shihuahuacoTree = ethers.utils.formatBytes32String('SHIHUAHUACO');
+const testTree = ethers.utils.formatBytes32String('TEST');
 
 describe('Launching the testing of the Plush Studio contracts', () => {
   let signers: Signer[];
