@@ -19,6 +19,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     PlushController private plushController;
 
     mapping(bytes32 => Tree) public trees;
+    bytes32[] private treesTypes;
 
     /**
      * @dev Roles definitions
@@ -65,6 +66,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         require(!trees[treeType].exists, "This type of tree already exists");
 
         trees[treeType] = Tree(treeType, price, count, true);
+        treesTypes.push(treeType);
     }
 
     /**
@@ -74,7 +76,33 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function removeTreeType(bytes32 treeType) external onlyRole(OPERATOR_ROLE) {
         require(trees[treeType].exists, "Not a valid tree type");
 
+        for(uint256 i = 0; i < treesTypes.length; i++){
+            if(treesTypes[i] == treeType){
+                delete treesTypes[i];
+            }
+        }
+
         delete trees[treeType];
+    }
+
+    /**
+     * @notice Get all types in string and bytes32
+     */
+    function getTreesTypes() external view returns(string memory)
+    {
+        string memory resultString = "";
+
+        for(uint256 i = 0; i < treesTypes.length; i++){
+            if(treesTypes[i][0] != 0){
+                resultString = string(bytes.concat(bytes(resultString), abi.encodePacked(treesTypes[i])));
+
+                if(i + 1 < treesTypes.length){
+                    resultString = string(bytes.concat(bytes(resultString), " ", bytes(", ")));
+                }
+            }
+        }
+
+        return resultString;
     }
 
     /**
