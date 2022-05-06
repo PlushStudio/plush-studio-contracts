@@ -160,7 +160,7 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
      * @param treeType Tree type in bytes32
      * @param mintAddress Address where to enroll the tree after purchase
      */
-    function buyTree(bytes32 treeType, address mintAddress) public {
+    function mint(bytes32 treeType, address mintAddress) public {
         require(trees[treeType].exists, "Not a valid tree type");
         require(trees[treeType].count > 0, "The trees are over");
         require(plushAccounts.getWalletAmount(msg.sender) >= trees[treeType].price, "Not enough PLSH tokens in PlushAccounts");

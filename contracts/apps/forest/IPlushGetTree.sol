@@ -75,7 +75,7 @@ interface IPlushGetTree {
      * @param treeType Tree type in bytes32
      * @param mintAddress Address where to enroll the tree after purchase
      */
-    function buyTree(bytes32 treeType, address mintAddress) external;
+    function mint(bytes32 treeType, address mintAddress) external;
 
     /// @notice Emitted when a tree is bought
     event TreeBought(

@@ -330,11 +330,11 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       await plushAccounts.getWalletAmount(await signers[0].getAddress()),
     ).to.eql(ethers.utils.parseUnits('6', 18));
 
-    const buyTree = await plushGetTree.buyTree(
+    const mintTree = await plushGetTree.mint(
       cacaoTree,
       await signers[1].getAddress(),
     );
-    await buyTree.wait();
+    await mintTree.wait();
 
     expect(await plushGetTree.getTreeTypeCount(cacaoTree)).to.eql(
       BigNumber.from(599),
