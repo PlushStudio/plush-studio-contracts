@@ -9,7 +9,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/finance/PlushAccounts.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/templates/apps/PlushController.sol";
 
-import "./IPlushGetTree.sol";
+import "../../interfaces/IPlushGetTree.sol";
+
 import "./token/ERC721/PlushForest.sol";
 
 /// @custom:security-contact security@plush.family
