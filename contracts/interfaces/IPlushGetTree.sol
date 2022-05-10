@@ -84,4 +84,28 @@ interface IPlushGetTree {
         bytes32 indexed treeType,
         uint256 purchaseAmount
     );
+
+    /// @notice Emitted when a tree type was added
+    event TreeAdded(
+        bytes32 indexed treeType,
+        uint256 price,
+        uint256 count
+    );
+
+    /// @notice Emitted when a tree type was removed
+    event TreeRemoved(
+        bytes32 indexed treeType
+    );
+
+    /// @notice Emitted when a tree type count changed
+    event TreeCountChanged(
+        bytes32 indexed treeType,
+        uint256 count
+    );
+
+    /// @notice Emitted when a tree type price changed
+    event TreePriceChanged(
+        bytes32 indexed treeType,
+        uint256 price
+    );
 }

@@ -68,6 +68,8 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
 
         trees[treeType] = Tree(treeType, price, count, true);
         treesTypes.push(treeType);
+
+        emit TreeAdded(treeType, price, count);
     }
 
     /**
@@ -84,6 +86,8 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         }
 
         delete trees[treeType];
+
+        emit TreeRemoved(treeType);
     }
 
     /**
@@ -133,6 +137,8 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function setTreeTypeCount(bytes32 treeType, uint256 count) external onlyRole(OPERATOR_ROLE) {
         require(trees[treeType].exists, "Not a valid tree type");
         trees[treeType].count = count;
+
+        emit TreeCountChanged(treeType, count);
     }
 
     /**
@@ -154,6 +160,8 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function setTreeTypePrice(bytes32 treeType, uint256 price) external onlyRole(OPERATOR_ROLE) {
         require(trees[treeType].exists, "Not a valid tree type");
         trees[treeType].price = price;
+
+        emit TreePriceChanged(treeType, price);
     }
 
     /**
