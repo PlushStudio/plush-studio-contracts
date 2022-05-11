@@ -672,22 +672,12 @@
     "@types/sinon-chai" "^3.2.3"
     "@types/web3" "1.0.19"
 
-"@openzeppelin/contracts-upgradeable@^4.5.2":
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.5.2.tgz#90d9e47bacfd8693bfad0ac8a394645575528d05"
-  integrity sha512-xgWZYaPlrEOQo3cBj97Ufiuv79SPd8Brh4GcFYhPgb6WvAq4ppz8dWKL6h+jLAK01rUqMRp/TS9AdXgAeNvCLA==
-
 "@openzeppelin/contracts-upgradeable@^4.6.0":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.6.0.tgz#1bf55f230f008554d4c6fe25eb165b85112108b0"
   integrity sha512-5OnVuO4HlkjSCJO165a4i2Pu1zQGzMs//o54LPrwUgxvEO2P3ax1QuaSI0cEHHTveA77guS0PnNugpR2JMsPfA==
 
-"@openzeppelin/contracts@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.5.0.tgz#3fd75d57de172b3743cdfc1206883f56430409cc"
-  integrity sha512-fdkzKPYMjrRiPK6K4y64e6GzULR7R7RwxSigHS8DDp7aWDeoReqsQI+cxHV1UuhAqX69L1lAaWDxenfP+xiqzA==
-
-"@openzeppelin/contracts@^4.6.0":
+"@openzeppelin/contracts@4.6.0", "@openzeppelin/contracts@^4.6.0":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.6.0.tgz#c91cf64bc27f573836dba4122758b4743418c1b3"
   integrity sha512-8vi4d50NNya/bQqCmaVzvHNmwHvS0OBKb7HNtuNwEE3scXWrP31fKQoGxNMT+KbzmrNZzatE3QK5p2gFONI/hg==
@@ -724,15 +714,15 @@
     proper-lockfile "^4.1.1"
     solidity-ast "^0.4.15"
 
-"@plushfamily/plush-protocol-contracts@^2.9.0":
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/@plushfamily/plush-protocol-contracts/-/plush-protocol-contracts-2.9.0.tgz#6158e6a70ebdf222ad93341c89f2b28628f23b01"
-  integrity sha512-Ax0DFMrQ8MwiZUoE6+x57v50Jvz6QgLWXGNkv71mkz9ViFxHWCvhKv9bxrP+lSljTQz4IHVlIBWK3e2R0x27fA==
+"@plushfamily/plush-protocol-contracts@^2.10.0":
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/@plushfamily/plush-protocol-contracts/-/plush-protocol-contracts-2.10.0.tgz#279a5610f7473da6d84db827be6d71470bae6579"
+  integrity sha512-iPF8qxjMKWoD4N9VcDUYn/L0PEclkOR28EO0xdSrMs//PRjNqhBuYkmtAZcRO4ibLYb9NvTWbwrQHJaCAV/ZCg==
   dependencies:
-    "@openzeppelin/contracts" "4.5.0"
-    "@openzeppelin/contracts-upgradeable" "^4.5.2"
+    "@openzeppelin/contracts" "4.6.0"
+    "@openzeppelin/contracts-upgradeable" "^4.6.0"
     "@openzeppelin/hardhat-defender" "^1.6.0"
-    dotenv "^16.0.0"
+    dotenv "^16.0.1"
 
 "@resolver-engine/core@^0.3.3":
   version "0.3.3"
@@ -3244,11 +3234,6 @@ dom-walk@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
   integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
-
-dotenv@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.0.tgz#c619001253be89ebb638d027b609c75c26e47411"
-  integrity sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==
 
 dotenv@^16.0.1:
   version "16.0.1"

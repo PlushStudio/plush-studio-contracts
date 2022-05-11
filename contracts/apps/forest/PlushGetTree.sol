@@ -172,9 +172,9 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
     function mint(bytes32 treeType, address mintAddress) public {
         require(trees[treeType].exists, "Not a valid tree type");
         require(trees[treeType].count > 0, "The trees are over");
-        require(plushAccounts.getWalletAmount(msg.sender) >= trees[treeType].price, "Not enough PLSH tokens in PlushAccounts");
+        require(plushAccounts.getAccountBalance(msg.sender) >= trees[treeType].price, "Not enough PLSH tokens in PlushAccounts");
 
-        plushController.decreaseWalletAmountTrans(msg.sender, trees[treeType].price);
+        plushController.decreaseAccountBalance(msg.sender, trees[treeType].price);
         plushForest.safeMint(mintAddress);
         trees[treeType].count -= 1;
 

@@ -12,6 +12,9 @@ import { PlushForest, PlushForestController, PlushGetTree } from '../types';
 const MINTER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('MINTER_ROLE'),
 );
+const BANKER_ROLE = ethers.utils.keccak256(
+  ethers.utils.toUtf8Bytes('BANKER_ROLE'),
+);
 const PAUSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PAUSER_ROLE'),
 );
@@ -126,14 +129,22 @@ describe('Launching the testing of the Plush Studio contracts', () => {
 
   it('[Plush Protocol] Connect PlushForest controller to ecosystem', async () => {
     const connectApp = await plushApps.addNewApp(
-      'forest',
+      ethers.utils.formatBytes32String('forest'),
       plushForestController.address,
       '100',
     );
     await connectApp.wait();
+
     expect(await plushApps.getFeeApp(plushForestController.address)).to.eql(
       BigNumber.from(100),
     );
+  });
+
+  it('plushForestController -> Add PlushGetTree', async () => {
+    const addNewApp = await plushForestController.addNewAppAddress(
+      plushGetTree.address,
+    );
+    await addNewApp.wait();
   });
 
   it('PlushForest -> Check total supply', async () => {
@@ -327,7 +338,7 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await depositToSafe.wait();
 
     expect(
-      await plushAccounts.getWalletAmount(await signers[0].getAddress()),
+      await plushAccounts.getAccountBalance(await signers[0].getAddress()),
     ).to.eql(ethers.utils.parseUnits('6', 18));
 
     const mintTree = await plushGetTree.mint(
@@ -348,20 +359,20 @@ describe('Launching the testing of the Plush Studio contracts', () => {
 
   it('PlushGetTree -> Checking that the meeting fees were distributed correctly', async () => {
     expect(
-      await plushAccounts.getWalletAmount(plushForestController.address),
+      await plushAccounts.getAccountBalance(plushForestController.address),
     ).to.eql(BigNumber.from('5994000000000000000')); // 99 percent of the cost was transferred to the owner of the application
     expect(
-      await plushAccounts.getWalletAmount(
+      await plushAccounts.getAccountBalance(
         plushAccountsRandomSafeAddress.address,
       ),
     ).to.eql(BigNumber.from('6000000000000000')); // 1 percent of the cost was transferred to the ecosystem
   });
 
   it('PlushForestController -> Test withdrawal for the app owner', async () => {
-    const addWithdrawAddress =
-      await plushForestController.addNewWithdrawalAddress(
-        await signers[1].getAddress(),
-      );
+    const addWithdrawAddress = await plushForestController.grantRole(
+      BANKER_ROLE,
+      await signers[1].getAddress(),
+    );
     await addWithdrawAddress.wait();
 
     const withdraw = await plushForestController
@@ -370,7 +381,7 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await withdraw.wait();
 
     expect(
-      await plushAccounts.getWalletAmount(plushForestController.address),
+      await plushAccounts.getAccountBalance(plushForestController.address),
     ).to.eql(BigNumber.from('5993000000000000000'));
 
     expect(await plush.balanceOf(await signers[1].getAddress())).to.eql(

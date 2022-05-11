@@ -37,7 +37,7 @@ contract PlushForest is Initializable, ERC721Upgradeable, ERC721EnumerableUpgrad
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://api.plush.family/forest/tokens/token/";
+        return "https://api.plush.dev/forest/tokens/token/";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
