@@ -146,7 +146,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
 
         addConnectionToDB(lifespanParentId, lifespanChildId, connectionType.id, dateStart, dateEnd, true);
 
-        if(!isConnectionExist(lifespanChildId, lifespanParentId)){
+        if(!isConnectionExist(lifespanChildId, lifespanParentId)) {
             addConnectionToDB(lifespanChildId, lifespanParentId, connectionType.swapId, dateStart, dateEnd, false);
         }
     }
@@ -156,7 +156,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param lifespanParentId id ERC721 parent token
      * @param lifespanChildId id ERC721 child token
      */
-    function removeConnection(uint256 lifespanParentId, uint256 lifespanChildId) external{
+    function removeConnection(uint256 lifespanParentId, uint256 lifespanChildId) external {
         require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
         require(isConnectionExist(lifespanParentId, lifespanChildId), 'Connection not exist');
 
@@ -177,7 +177,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param lifespanParentId id ERC721 parent token
      * @param lifespanChildId id ERC721 child token
      */
-    function approveConnection(uint256 lifespanParentId, uint256 lifespanChildId) external{
+    function approveConnection(uint256 lifespanParentId, uint256 lifespanChildId) external {
         require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
         require(isConnectionExist(lifespanParentId, lifespanChildId), 'Connection not exist');
 
@@ -197,7 +197,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param typeConnectionId id type of new connection
      * @param typeConnectionSwapId id type of new swap connection
      */
-    function addConnectionType(uint256 typeConnectionId, uint256 typeConnectionSwapId) external onlyRole(OPERATOR_ROLE){
+    function addConnectionType(uint256 typeConnectionId, uint256 typeConnectionSwapId) external onlyRole(OPERATOR_ROLE) {
         require(!isConnectionTypeExist(typeConnectionId), 'Connection type exist');
 
         ConnectionType memory connectionType = ConnectionType(typeConnectionId, typeConnectionSwapId, false);
@@ -210,11 +210,11 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @notice Add new connection type
      * @param typeConnectionId id type of connection
      */
-    function removeConnectionType(uint256 typeConnectionId) external onlyRole(OPERATOR_ROLE){
+    function removeConnectionType(uint256 typeConnectionId) external onlyRole(OPERATOR_ROLE) {
         require(isConnectionTypeExist(typeConnectionId), 'Connection type not exist');
 
-        for(uint256 i = 0; i < connectionsTypes.length; i++){
-            if(connectionsTypes[i].id == typeConnectionId){
+        for(uint256 i = 0; i < connectionsTypes.length; i++) {
+            if(connectionsTypes[i].id == typeConnectionId) {
                 connectionsTypes[i].isDeleted = true;
 
                 emit ConnectionTypeRemoved(msg.sender, typeConnectionId);
@@ -227,9 +227,9 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param typeConnectionId id type of connection
      * @return true or false - exist connection type or not
      */
-    function isConnectionTypeExist(uint256 typeConnectionId) private view returns(bool){
-        for(uint256 i = 0; i < connectionsTypes.length; i++){
-            if(connectionsTypes[i].id == typeConnectionId && connectionsTypes[i].isDeleted == false){
+    function isConnectionTypeExist(uint256 typeConnectionId) private view returns(bool) {
+        for(uint256 i = 0; i < connectionsTypes.length; i++) {
+            if(connectionsTypes[i].id == typeConnectionId && connectionsTypes[i].isDeleted == false) {
                 return true;
             }
         }
@@ -262,7 +262,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param lifespanChildId id ERC721 child token
      * @return true or false - exist connection or not
      */
-    function isConnectionExist(uint256 lifespanParentId, uint256 lifespanChildId) private view returns(bool){
+    function isConnectionExist(uint256 lifespanParentId, uint256 lifespanChildId) private view returns(bool) {
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
 
         for(uint256 i = 0; i < idsByLifespan.length; i++) {
@@ -300,12 +300,14 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @notice Get connection type by id
      * @param typeConnectionId id type of connection
      */
-    function getConnectionType(uint256 typeConnectionId) private view returns(ConnectionType memory){
+    function getConnectionType(uint256 typeConnectionId) private view returns(ConnectionType memory) {
         ConnectionType memory temp;
 
-        for(uint256 i = 0; i < connectionsTypes.length; i++){
-            if(connectionsTypes[i].id == typeConnectionId){
+        for(uint256 i = 0; i < connectionsTypes.length; i++) {
+            if(connectionsTypes[i].id == typeConnectionId) {
                 temp = connectionsTypes[i];
+
+                break;
             }
         }
 
