@@ -87,8 +87,8 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param startDate date start connection
      */
     function setStartDate(uint256 lifespanParentId, uint256 lifespanChildId, uint256 startDate) external {
-        require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
-        require(isConnectionExist(lifespanParentId, lifespanChildId), 'Connection not exist');
+        require(lifespan.ownerOf(lifespanParentId) == msg.sender, "No rights to lifespan token");
+        require(isConnectionExist(lifespanParentId, lifespanChildId), "Connection not exist");
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
 
@@ -110,8 +110,8 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param endDate date end connection
      */
     function setEndDate(uint256 lifespanParentId, uint256 lifespanChildId, uint256 endDate) external {
-        require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
-        require(isConnectionExist(lifespanParentId, lifespanChildId), 'Connection not exist');
+        require(lifespan.ownerOf(lifespanParentId) == msg.sender, "No rights to lifespan token");
+        require(isConnectionExist(lifespanParentId, lifespanChildId), "Connection not exist");
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
 
@@ -135,12 +135,12 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param dateEnd date when connection end
      */
     function addConnection(uint256 lifespanParentId, uint256 lifespanChildId, uint256 typeConnectionId, uint256 dateStart, uint256 dateEnd) external {
-        require(lifespan.ownerOf(lifespanParentId) == address(lifespan.ownerOf(lifespanParentId)), 'Nonexistent parent token');
-        require(lifespan.ownerOf(lifespanChildId) == address(lifespan.ownerOf(lifespanChildId)), 'Nonexistent child token');
-        require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
-        require(lifespanParentId != lifespanChildId, 'Connection not possible');
-        require(isConnectionTypeExist(typeConnectionId), 'Connection type unknown');
-        require(!isConnectionExist(lifespanParentId, lifespanChildId), 'Connection exist');
+        require(lifespan.ownerOf(lifespanParentId) == address(lifespan.ownerOf(lifespanParentId)), "Nonexistent parent token");
+        require(lifespan.ownerOf(lifespanChildId) == address(lifespan.ownerOf(lifespanChildId)), "Nonexistent child token");
+        require(lifespan.ownerOf(lifespanParentId) == msg.sender, "No rights to lifespan token");
+        require(lifespanParentId != lifespanChildId, "Connection not possible");
+        require(isConnectionTypeExist(typeConnectionId), "Connection type unknown");
+        require(!isConnectionExist(lifespanParentId, lifespanChildId), "Connection exist");
 
         ConnectionType memory connectionType = getConnectionType(typeConnectionId);
 
@@ -157,8 +157,8 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param lifespanChildId id ERC721 child token
      */
     function removeConnection(uint256 lifespanParentId, uint256 lifespanChildId) external {
-        require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
-        require(isConnectionExist(lifespanParentId, lifespanChildId), 'Connection not exist');
+        require(lifespan.ownerOf(lifespanParentId) == msg.sender, "No rights to lifespan token");
+        require(isConnectionExist(lifespanParentId, lifespanChildId), "Connection not exist");
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
 
@@ -178,8 +178,8 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param lifespanChildId id ERC721 child token
      */
     function approveConnection(uint256 lifespanParentId, uint256 lifespanChildId) external {
-        require(lifespan.ownerOf(lifespanParentId) == msg.sender, 'No rights to lifespan token');
-        require(isConnectionExist(lifespanParentId, lifespanChildId), 'Connection not exist');
+        require(lifespan.ownerOf(lifespanParentId) == msg.sender, "No rights to lifespan token");
+        require(isConnectionExist(lifespanParentId, lifespanChildId), "Connection not exist");
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
 
@@ -198,7 +198,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param typeConnectionSwapId id type of new swap connection
      */
     function addConnectionType(uint256 typeConnectionId, uint256 typeConnectionSwapId) external onlyRole(OPERATOR_ROLE) {
-        require(!isConnectionTypeExist(typeConnectionId), 'Connection type exist');
+        require(!isConnectionTypeExist(typeConnectionId), "Connection type exist");
 
         ConnectionType memory connectionType = ConnectionType(typeConnectionId, typeConnectionSwapId, false);
         connectionsTypes.push(connectionType);
@@ -211,7 +211,7 @@ contract PlushOrigin is Initializable, PausableUpgradeable, AccessControlUpgrade
      * @param typeConnectionId id type of connection
      */
     function removeConnectionType(uint256 typeConnectionId) external onlyRole(OPERATOR_ROLE) {
-        require(isConnectionTypeExist(typeConnectionId), 'Connection type not exist');
+        require(isConnectionTypeExist(typeConnectionId), "Connection type not exist");
 
         for(uint256 i = 0; i < connectionsTypes.length; i++) {
             if(connectionsTypes[i].id == typeConnectionId) {
