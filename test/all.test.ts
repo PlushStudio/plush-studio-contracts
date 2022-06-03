@@ -230,13 +230,9 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     const removeTree = await plushGetTree.removeTreeType(testTree);
     await removeTree.wait();
 
-    await expect(plushGetTree.getTreeTypeCount(testTree)).to.be.revertedWith(
-      'Not a valid tree type',
-    );
+    await expect(plushGetTree.getTreeTypeCount(testTree)).to.be.reverted;
 
-    await expect(plushGetTree.getTreeTypePrice(testTree)).to.be.revertedWith(
-      'Not a valid tree type',
-    );
+    await expect(plushGetTree.getTreeTypePrice(testTree)).to.be.reverted;
   });
 
   it('PlushForest -> Check pause contract', async () => {
