@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
+import "../../interfaces/IPlushGetTree.sol";
+
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -9,12 +11,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/finance/PlushAccounts.sol";
 import "@plushfamily/plush-protocol-contracts/contracts/templates/apps/PlushController.sol";
 
-import "../../interfaces/IPlushGetTree.sol";
-
 import "./token/ERC721/PlushForest.sol";
 
 /// @custom:security-contact security@plush.family
-contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable, IPlushGetTree {
+contract PlushGetTree is IPlushGetTree, Initializable, PausableUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
     PlushForest private plushForest;
     PlushAccounts private plushAccounts;
     PlushController private plushController;
@@ -174,9 +174,10 @@ contract PlushGetTree is Initializable, PausableUpgradeable, AccessControlUpgrad
         require(trees[treeType].count > 0, "The trees are over");
         require(plushAccounts.getAccountBalance(msg.sender) >= trees[treeType].price, "Not enough PLSH tokens in PlushAccounts");
 
-        plushController.decreaseAccountBalance(msg.sender, trees[treeType].price);
-        plushForest.safeMint(mintAddress);
         trees[treeType].count -= 1;
+        plushController.decreaseAccountBalance(msg.sender, trees[treeType].price);
+
+        plushForest.safeMint(mintAddress);
 
         emit TreeBought(msg.sender, mintAddress, treeType, trees[treeType].price);
     }
