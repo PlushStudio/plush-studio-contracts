@@ -64,6 +64,15 @@ export default {
   solidity: {
     compilers: [
       {
+        version: '0.8.14',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+        },
+      },
+      {
         version: '0.8.13',
         settings: {
           optimizer: {
@@ -129,7 +138,7 @@ export default {
     ],
     overrides: {
       'contracts/apps/forest/token/ERC721/PlushForest.sol': {
-        version: '0.8.13',
+        version: '0.8.14',
         settings: {
           optimizer: {
             enabled: true,
@@ -138,7 +147,7 @@ export default {
         },
       },
       'contracts/apps/forest/PlushForestController.sol': {
-        version: '0.8.13',
+        version: '0.8.14',
         settings: {
           optimizer: {
             enabled: true,
@@ -147,7 +156,7 @@ export default {
         },
       },
       'contracts/apps/forest/PlushGetTree.sol': {
-        version: '0.8.13',
+        version: '0.8.14',
         settings: {
           optimizer: {
             enabled: true,
