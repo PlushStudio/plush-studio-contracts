@@ -221,6 +221,8 @@ contract PlushGetTree is
             trees[treeType].price
         );
 
+        trees[treeType].count -= 1;
+
         plushForest.safeMint(mintAddress);
 
         emit TreeBought(

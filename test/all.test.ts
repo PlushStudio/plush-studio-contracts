@@ -343,7 +343,7 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
     await mintTree.wait();
 
-    expect(await plushGetTree.getTreeTypeCount(cacaoTree)).to.eql(
+    expect(await plushGetTree.getTreeTypeCount(cacaoTree)).to.deep.equal(
       BigNumber.from(599),
     );
 
