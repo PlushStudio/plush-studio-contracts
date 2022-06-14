@@ -31,9 +31,9 @@ contract PlushGetTree is
     /**
      * @dev Roles definitions
      */
-    bytes32 public constant PAUSER_ROLE = keccak256('PAUSER_ROLE');
-    bytes32 public constant OPERATOR_ROLE = keccak256('OPERATOR_ROLE');
-    bytes32 public constant UPGRADER_ROLE = keccak256('UPGRADER_ROLE');
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
@@ -78,7 +78,7 @@ contract PlushGetTree is
         uint256 price,
         uint256 count
     ) external onlyRole(OPERATOR_ROLE) {
-        require(!trees[treeType].exists, 'This type of tree already exists');
+        require(!trees[treeType].exists, "This type of tree already exists");
 
         trees[treeType] = Tree(treeType, price, count, true);
         treesTypes.push(treeType);
@@ -91,7 +91,7 @@ contract PlushGetTree is
      * @param treeType Tree type in bytes32
      */
     function removeTreeType(bytes32 treeType) external onlyRole(OPERATOR_ROLE) {
-        require(trees[treeType].exists, 'Not a valid tree type');
+        require(trees[treeType].exists, "Not a valid tree type");
 
         for (uint256 i = 0; i < treesTypes.length; i++) {
             if (treesTypes[i] == treeType) {
@@ -108,7 +108,7 @@ contract PlushGetTree is
      * @notice Get all types in string
      */
     function getTreesTypes() external view returns (string memory) {
-        string memory resultString = '';
+        string memory resultString = "";
 
         for (uint256 i = 0; i < treesTypes.length; i++) {
             if (treesTypes[i][0] != 0) {
@@ -121,7 +121,7 @@ contract PlushGetTree is
 
                 if (i + 1 < treesTypes.length) {
                     resultString = string(
-                        bytes.concat(bytes(resultString), ' ', bytes(', '))
+                        bytes.concat(bytes(resultString), " ", bytes(", "))
                     );
                 }
             }
@@ -152,7 +152,7 @@ contract PlushGetTree is
         view
         returns (uint256)
     {
-        require(trees[treeType].exists, 'Not a valid tree type');
+        require(trees[treeType].exists, "Not a valid tree type");
 
         return trees[treeType].count;
     }
@@ -166,7 +166,7 @@ contract PlushGetTree is
         external
         onlyRole(OPERATOR_ROLE)
     {
-        require(trees[treeType].exists, 'Not a valid tree type');
+        require(trees[treeType].exists, "Not a valid tree type");
         trees[treeType].count = count;
 
         emit TreeCountChanged(treeType, count);
@@ -182,7 +182,7 @@ contract PlushGetTree is
         view
         returns (uint256)
     {
-        require(trees[treeType].exists, 'Not a valid tree type');
+        require(trees[treeType].exists, "Not a valid tree type");
 
         return trees[treeType].price;
     }
@@ -196,7 +196,7 @@ contract PlushGetTree is
         external
         onlyRole(OPERATOR_ROLE)
     {
-        require(trees[treeType].exists, 'Not a valid tree type');
+        require(trees[treeType].exists, "Not a valid tree type");
         trees[treeType].price = price;
 
         emit TreePriceChanged(treeType, price);
@@ -208,12 +208,12 @@ contract PlushGetTree is
      * @param mintAddress Address where to enroll the tree after purchase
      */
     function mint(bytes32 treeType, address mintAddress) public {
-        require(trees[treeType].exists, 'Not a valid tree type');
-        require(trees[treeType].count > 0, 'The trees are over');
+        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].count > 0, "The trees are over");
         require(
             plushAccounts.getAccountBalance(msg.sender) >=
                 trees[treeType].price,
-            'Not enough PLSH tokens in PlushAccounts'
+            "Not enough PLSH tokens in PlushAccounts"
         );
 
         plushController.decreaseAccountBalance(

@@ -25,9 +25,9 @@ contract PlushOrigin is
     /**
      * @dev Roles definitions
      */
-    bytes32 public constant PAUSER_ROLE = keccak256('PAUSER_ROLE');
-    bytes32 public constant OPERATOR_ROLE = keccak256('OPERATOR_ROLE');
-    bytes32 public constant UPGRADER_ROLE = keccak256('UPGRADER_ROLE');
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
@@ -109,11 +109,11 @@ contract PlushOrigin is
     ) external {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            'No rights to lifespan token'
+            "No rights to lifespan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            'Connection not exist'
+            "Connection not exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -145,11 +145,11 @@ contract PlushOrigin is
     ) external {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            'No rights to lifespan token'
+            "No rights to lifespan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            'Connection not exist'
+            "Connection not exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -186,25 +186,25 @@ contract PlushOrigin is
         require(
             lifespan.ownerOf(lifespanParentId) ==
                 address(lifespan.ownerOf(lifespanParentId)),
-            'Nonexistent parent token'
+            "Nonexistent parent token"
         );
         require(
             lifespan.ownerOf(lifespanChildId) ==
                 address(lifespan.ownerOf(lifespanChildId)),
-            'Nonexistent child token'
+            "Nonexistent child token"
         );
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            'No rights to lifespan token'
+            "No rights to lifespan token"
         );
-        require(lifespanParentId != lifespanChildId, 'Connection not possible');
+        require(lifespanParentId != lifespanChildId, "Connection not possible");
         require(
             isConnectionTypeExist(typeConnectionId),
-            'Connection type unknown'
+            "Connection type unknown"
         );
         require(
             !isConnectionExist(lifespanParentId, lifespanChildId),
-            'Connection exist'
+            "Connection exist"
         );
 
         ConnectionType memory connectionType = getConnectionType(
@@ -242,11 +242,11 @@ contract PlushOrigin is
     {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            'No rights to lifespan token'
+            "No rights to lifespan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            'Connection not exist'
+            "Connection not exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -278,11 +278,11 @@ contract PlushOrigin is
     ) external {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            'No rights to lifespan token'
+            "No rights to lifespan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            'Connection not exist'
+            "Connection not exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -309,7 +309,7 @@ contract PlushOrigin is
     ) external onlyRole(OPERATOR_ROLE) {
         require(
             !isConnectionTypeExist(typeConnectionId),
-            'Connection type exist'
+            "Connection type exist"
         );
 
         ConnectionType memory connectionType = ConnectionType(
@@ -336,7 +336,7 @@ contract PlushOrigin is
     {
         require(
             isConnectionTypeExist(typeConnectionId),
-            'Connection type not exist'
+            "Connection type not exist"
         );
 
         for (uint256 i = 0; i < connectionsTypes.length; i++) {

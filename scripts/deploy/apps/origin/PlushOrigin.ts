@@ -29,8 +29,6 @@ async function main() {
   await plushOrigin.deployed();
   console.log('PlushOrigin -> deployed to address:', plushOrigin.address);
 
-  console.log('Grant all roles for DAO Protocol...\n');
-
   const addConnectionType1 = await plushOrigin.addConnectionType(0, 2);
   const addConnectionType2 = await plushOrigin.addConnectionType(1, 1);
   const addConnectionType3 = await plushOrigin.addConnectionType(2, 0);
@@ -40,6 +38,8 @@ async function main() {
   await addConnectionType2.wait();
   await addConnectionType3.wait();
   await addConnectionType4.wait();
+
+  console.log('Grant all roles for Plush Studio DAO...\n');
 
   const grantAdminRole = await plushOrigin.grantRole(
     constants.HashZero,
