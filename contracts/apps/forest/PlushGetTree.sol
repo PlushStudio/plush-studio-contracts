@@ -207,6 +207,7 @@ contract PlushGetTree is
      * @param treeType Tree type in bytes32
      * @param mintAddress Address where to enroll the tree after purchase
      */
+    function mint(bytes32 treeType, address mintAddress) public {
         require(trees[treeType].exists, 'Not a valid tree type');
         require(trees[treeType].count > 0, 'The trees are over');
         require(
