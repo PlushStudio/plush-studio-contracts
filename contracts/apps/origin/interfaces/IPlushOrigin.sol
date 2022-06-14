@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 interface IPlushOrigin {
-
     // Connection lifespan
     struct Connection {
         uint256 lifespanParentId;
@@ -31,14 +30,20 @@ interface IPlushOrigin {
      * @notice Get all connections by Lifespan id
      * @param lifespanParentId id ERC721 parent token
      */
-    function getOrigin(uint256 lifespanParentId) external view returns(uint256[] memory);
+    function getOrigin(uint256 lifespanParentId)
+        external
+        view
+        returns (uint256[] memory);
 
     /**
      * @notice Get tuple connection by id
      * @param connectionId connection id
      * @return connection struct of id
      */
-    function getConnectionById(uint256 connectionId) external view returns(Connection memory);
+    function getConnectionById(uint256 connectionId)
+        external
+        view
+        returns (Connection memory);
 
     /**
      * @notice set date start connection
@@ -46,7 +51,11 @@ interface IPlushOrigin {
      * @param lifespanChildId id ERC721 child token
      * @param startDate date start connection
      */
-    function setStartDate(uint256 lifespanParentId, uint256 lifespanChildId, uint256 startDate) external;
+    function setStartDate(
+        uint256 lifespanParentId,
+        uint256 lifespanChildId,
+        uint256 startDate
+    ) external;
 
     /**
      * @notice set date end connection
@@ -54,7 +63,11 @@ interface IPlushOrigin {
      * @param lifespanChildId id ERC721 child token
      * @param endDate date end connection
      */
-    function setEndDate(uint256 lifespanParentId, uint256 lifespanChildId, uint256 endDate) external;
+    function setEndDate(
+        uint256 lifespanParentId,
+        uint256 lifespanChildId,
+        uint256 endDate
+    ) external;
 
     /**
      * @notice Add new connection Lifespan
@@ -64,28 +77,41 @@ interface IPlushOrigin {
      * @param dateStart date when connection start
      * @param dateEnd date when connection end
      */
-    function addConnection(uint256 lifespanParentId, uint256 lifespanChildId, uint256 typeConnectionId, uint256 dateStart, uint256 dateEnd) external;
+    function addConnection(
+        uint256 lifespanParentId,
+        uint256 lifespanChildId,
+        uint256 typeConnectionId,
+        uint256 dateStart,
+        uint256 dateEnd
+    ) external;
 
     /**
      * @notice Remove connection
      * @param lifespanParentId id ERC721 parent token
      * @param lifespanChildId id ERC721 child token
      */
-    function removeConnection(uint256 lifespanParentId, uint256 lifespanChildId) external;
+    function removeConnection(uint256 lifespanParentId, uint256 lifespanChildId)
+        external;
 
     /**
      * @notice Approve connection
      * @param lifespanParentId id ERC721 parent token
      * @param lifespanChildId id ERC721 child token
      */
-    function approveConnection(uint256 lifespanParentId, uint256 lifespanChildId) external;
+    function approveConnection(
+        uint256 lifespanParentId,
+        uint256 lifespanChildId
+    ) external;
 
     /**
      * @notice Add new connection type
      * @param typeConnectionId id type of new connection
      * @param typeConnectionSwapId id type of new swap connection
      */
-    function addConnectionType(uint256 typeConnectionId, uint256 typeConnectionSwapId) external;
+    function addConnectionType(
+        uint256 typeConnectionId,
+        uint256 typeConnectionSwapId
+    ) external;
 
     /**
      * @notice Add new connection type
@@ -116,8 +142,5 @@ interface IPlushOrigin {
     );
 
     /// @notice Emitted when new connection type removed
-    event ConnectionTypeRemoved(
-        address indexed creator,
-        uint256 idType
-    );
+    event ConnectionTypeRemoved(address indexed creator, uint256 idType);
 }
