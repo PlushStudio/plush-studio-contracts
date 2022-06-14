@@ -43,28 +43,28 @@ async function main() {
 
   const grantAdminRole = await plushOrigin.grantRole(
     constants.HashZero,
-    DevContractsAddresses.PLUSH_DAO_PROTOCOL_ADDRESS,
+    DevContractsAddresses.PLUSH_STUDIO_DAO_ADDRESS,
   ); // ADMIN role
 
   await grantAdminRole.wait();
 
   const grantMinterRole = await plushOrigin.grantRole(
     MINTER_ROLE,
-    DevContractsAddresses.PLUSH_DAO_PROTOCOL_ADDRESS,
+    DevContractsAddresses.PLUSH_STUDIO_DAO_ADDRESS,
   ); // MINTER role
 
   await grantMinterRole.wait();
 
   const grantPauserRole = await plushOrigin.grantRole(
     PAUSER_ROLE,
-    DevContractsAddresses.PLUSH_DAO_PROTOCOL_ADDRESS,
+    DevContractsAddresses.PLUSH_STUDIO_DAO_ADDRESS,
   ); // PAUSER role
 
   await grantPauserRole.wait();
 
   const grantUpgraderRole = await plushOrigin.grantRole(
     UPGRADER_ROLE,
-    DevContractsAddresses.PLUSH_DAO_PROTOCOL_ADDRESS,
+    DevContractsAddresses.PLUSH_STUDIO_DAO_ADDRESS,
   ); // UPGRADER role
 
   await grantUpgraderRole.wait();
