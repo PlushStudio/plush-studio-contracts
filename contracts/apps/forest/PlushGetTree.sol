@@ -216,12 +216,12 @@ contract PlushGetTree is
             "Not enough PLSH tokens in PlushAccounts"
         );
 
+        trees[treeType].count -= 1;
+
         plushController.decreaseAccountBalance(
             msg.sender,
             trees[treeType].price
         );
-
-        trees[treeType].count -= 1;
 
         plushForest.safeMint(mintAddress);
 
