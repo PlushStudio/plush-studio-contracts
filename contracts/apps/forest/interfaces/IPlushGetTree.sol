@@ -83,6 +83,10 @@ interface IPlushGetTree {
      */
     function mint(bytes32 treeType, address mintAddress) external;
 
+    /****************************************
+     *                EVENTS                *
+     ****************************************/
+
     /// @notice Emitted when a tree is bought
     event TreeBought(
         address indexed buyer,

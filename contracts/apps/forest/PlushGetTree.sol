@@ -91,7 +91,7 @@ contract PlushGetTree is
      * @param treeType Tree type in bytes32
      */
     function removeTreeType(bytes32 treeType) external onlyRole(OPERATOR_ROLE) {
-        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].exists, "Tree type doesn't exist");
 
         for (uint256 i = 0; i < treesTypes.length; i++) {
             if (treesTypes[i] == treeType) {
@@ -152,7 +152,7 @@ contract PlushGetTree is
         view
         returns (uint256)
     {
-        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].exists, "Tree type doesn't exist");
 
         return trees[treeType].count;
     }
@@ -166,7 +166,7 @@ contract PlushGetTree is
         external
         onlyRole(OPERATOR_ROLE)
     {
-        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].exists, "Tree type doesn't exist");
         trees[treeType].count = count;
 
         emit TreeCountChanged(treeType, count);
@@ -182,7 +182,7 @@ contract PlushGetTree is
         view
         returns (uint256)
     {
-        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].exists, "Tree type doesn't exist");
 
         return trees[treeType].price;
     }
@@ -196,7 +196,7 @@ contract PlushGetTree is
         external
         onlyRole(OPERATOR_ROLE)
     {
-        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].exists, "Tree type doesn't exist");
         trees[treeType].price = price;
 
         emit TreePriceChanged(treeType, price);
@@ -208,7 +208,7 @@ contract PlushGetTree is
      * @param mintAddress Address where to enroll the tree after purchase
      */
     function mint(bytes32 treeType, address mintAddress) public {
-        require(trees[treeType].exists, "Not a valid tree type");
+        require(trees[treeType].exists, "Tree type doesn't exist");
         require(trees[treeType].count > 0, "The trees are over");
         require(
             plushAccounts.getAccountBalance(msg.sender) >=

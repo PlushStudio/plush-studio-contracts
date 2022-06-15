@@ -348,6 +348,10 @@ contract PlushOrigin is
         }
     }
 
+    /**************************************
+     *         PRIVATE FUNCTIONS         *
+     **************************************/
+
     /**
      * @notice Checking for the existence of such a connection type
      * @param typeConnectionId id type of connection

@@ -119,6 +119,10 @@ interface IPlushOrigin {
      */
     function removeConnectionType(uint256 idType) external;
 
+    /****************************************
+     *                EVENTS                *
+     ****************************************/
+
     /// @notice Emitted when new connection created
     event ConnectionAdded(
         address indexed creator,
