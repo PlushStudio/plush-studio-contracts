@@ -7,7 +7,14 @@ import {
   PlushApps,
 } from '@plushfamily/plush-protocol-contracts';
 
-import { PlushForest, PlushForestController, PlushGetTree } from '../types';
+import {
+  LifeSpan,
+  PlushForest,
+  PlushForestController,
+  PlushGetTree,
+  PlushOrigin,
+  PlushOriginController,
+} from '../types';
 
 const MINTER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('MINTER_ROLE'),
@@ -43,6 +50,9 @@ describe('Launching the testing of the Plush Studio contracts', () => {
   let PlushFactory: ContractFactory;
   let plush: Plush;
 
+  let LifeSpanFactory: ContractFactory;
+  let lifespan: LifeSpan;
+
   let PlushAppsFactory: ContractFactory;
   let plushApps: PlushApps;
 
@@ -59,10 +69,22 @@ describe('Launching the testing of the Plush Studio contracts', () => {
   let PlushGetTreeFactory: ContractFactory;
   let plushGetTree: PlushGetTree;
 
+  let PlushOriginControllerFactory: ContractFactory;
+  let plushOriginController: PlushOriginController;
+
+  let PlushOriginFactory: ContractFactory;
+  let plushOrigin: PlushOrigin;
+
   it('[Deploy contract] Plush Protocol – Plush', async () => {
     PlushFactory = await ethers.getContractFactory('Plush');
     plush = (await PlushFactory.deploy()) as Plush;
     await plush.deployed();
+  });
+
+  it('[Deploy contract] Plush Protocol – LifeSpan', async () => {
+    LifeSpanFactory = await ethers.getContractFactory('LifeSpan');
+    lifespan = (await LifeSpanFactory.deploy()) as LifeSpan;
+    await lifespan.deployed();
   });
 
   it('[Deploy contract] Plush Protocol – PlushApps', async () => {
@@ -127,6 +149,32 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await plushGetTree.deployed();
   });
 
+  it('[Deploy contract] PlushOriginController', async () => {
+    PlushOriginControllerFactory = await ethers.getContractFactory(
+      'PlushOriginController',
+    );
+    plushOriginController = (await upgrades.deployProxy(
+      PlushOriginControllerFactory,
+      [plush.address, plushAccounts.address],
+      {
+        kind: 'uups',
+      },
+    )) as PlushOriginController;
+    await plushOriginController.deployed();
+  });
+
+  it('[Deploy contract] PlushOrigin', async () => {
+    PlushOriginFactory = await ethers.getContractFactory('PlushOrigin');
+    plushOrigin = (await upgrades.deployProxy(
+      PlushOriginFactory,
+      [lifespan.address],
+      {
+        kind: 'uups',
+      },
+    )) as PlushOrigin;
+    await plushOrigin.deployed();
+  });
+
   it('[Plush Protocol] Connect PlushForest controller to ecosystem', async () => {
     const connectApp = await plushApps.addNewApp(
       ethers.utils.formatBytes32String('forest'),
@@ -140,9 +188,29 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
   });
 
+  it('[Plush Protocol] Connect PlushOrigin controller to ecosystem', async () => {
+    const connectApp = await plushApps.addNewApp(
+      ethers.utils.formatBytes32String('origin'),
+      plushOriginController.address,
+      '100',
+    );
+    await connectApp.wait();
+
+    expect(await plushApps.getFeeApp(plushOriginController.address)).to.eql(
+      BigNumber.from(100),
+    );
+  });
+
   it('plushForestController -> Add PlushGetTree', async () => {
     const addNewApp = await plushForestController.addNewAppAddress(
       plushGetTree.address,
+    );
+    await addNewApp.wait();
+  });
+
+  it('plushOriginController -> Add PlushOrigin', async () => {
+    const addNewApp = await plushOriginController.addNewAppAddress(
+      plushOrigin.address,
     );
     await addNewApp.wait();
   });
