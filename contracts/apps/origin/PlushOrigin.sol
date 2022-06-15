@@ -352,6 +352,29 @@ contract PlushOrigin is
      *         PRIVATE FUNCTIONS         *
      **************************************/
 
+
+    /**
+     * @notice Get connection type by id
+     * @param typeConnectionId id type of connection
+     */
+    function getConnectionType(uint256 typeConnectionId)
+    private
+    view
+    returns (ConnectionType memory)
+    {
+        ConnectionType memory temp;
+
+        for (uint256 i = 0; i < connectionsTypes.length; i++) {
+            if (connectionsTypes[i].id == typeConnectionId) {
+                temp = connectionsTypes[i];
+
+                break;
+            }
+        }
+
+        return temp;
+    }
+
     /**
      * @notice Checking for the existence of such a connection type
      * @param typeConnectionId id type of connection
@@ -372,29 +395,6 @@ contract PlushOrigin is
         }
 
         return false;
-    }
-
-    /**
-     * @notice Get count of not deleted connections
-     * @param connectionsParent array of ids connections
-     * @return count of not deleted connections
-     */
-    function getCountNotDeletedConnections(uint256[] memory connectionsParent)
-        private
-        view
-        returns (uint256)
-    {
-        uint256 count = 0;
-
-        for (uint256 i = 0; i < connectionsParent.length; i++) {
-            Connection memory connection = connections[connectionsParent[i]];
-
-            if (connection.isDeleted == false) {
-                count++;
-            }
-        }
-
-        return count;
     }
 
     /**
@@ -464,25 +464,26 @@ contract PlushOrigin is
     }
 
     /**
-     * @notice Get connection type by id
-     * @param typeConnectionId id type of connection
+     * @notice Get count of not deleted connections
+     * @param connectionsParent array of ids connections
+     * @return count of not deleted connections
      */
-    function getConnectionType(uint256 typeConnectionId)
-        private
-        view
-        returns (ConnectionType memory)
+    function getCountNotDeletedConnections(uint256[] memory connectionsParent)
+    private
+    view
+    returns (uint256)
     {
-        ConnectionType memory temp;
+        uint256 count = 0;
 
-        for (uint256 i = 0; i < connectionsTypes.length; i++) {
-            if (connectionsTypes[i].id == typeConnectionId) {
-                temp = connectionsTypes[i];
+        for (uint256 i = 0; i < connectionsParent.length; i++) {
+            Connection memory connection = connections[connectionsParent[i]];
 
-                break;
+            if (connection.isDeleted == false) {
+                count++;
             }
         }
 
-        return temp;
+        return count;
     }
 
     function _authorizeUpgrade(address newImplementation)
