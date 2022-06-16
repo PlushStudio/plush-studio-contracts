@@ -83,7 +83,9 @@ describe('Launching the testing of the Plush Studio contracts', () => {
 
   it('[Deploy contract] Plush Protocol – LifeSpan', async () => {
     LifeSpanFactory = await ethers.getContractFactory('LifeSpan');
-    lifespan = (await LifeSpanFactory.deploy()) as LifeSpan;
+    lifespan = (await upgrades.deployProxy(LifeSpanFactory, {
+      kind: 'uups',
+    })) as LifeSpan;
     await lifespan.deployed();
   });
 
@@ -451,5 +453,42 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     expect(await plush.balanceOf(await signers[1].getAddress())).to.eql(
       BigNumber.from('1000000000000000'),
     );
+  });
+
+  it('Plush Origin -> Add basic connection types', async () => {
+    const addConnectionType1 = await plushOrigin.addConnectionType(0, 2);
+    await addConnectionType1.wait();
+
+    const addConnectionType2 = await plushOrigin.addConnectionType(1, 1);
+    await addConnectionType2.wait();
+
+    const addConnectionType3 = await plushOrigin.addConnectionType(2, 0);
+    await addConnectionType3.wait();
+
+    const addConnectionType4 = await plushOrigin.addConnectionType(3, 3);
+    await addConnectionType4.wait();
+  });
+
+  it('LifeSpan -> Mint test tokens for connection', async () => {
+    const mintFirstToken = await lifespan.safeMint(
+      await signers[0].getAddress(),
+    );
+    await mintFirstToken.wait();
+
+    const mintSecondToken = await lifespan.safeMint(
+      await signers[0].getAddress(),
+    );
+    await mintSecondToken.wait();
+  });
+
+  it('Plush Origin -> Add test connection', async () => {
+    const firstConnection = await plushOrigin.addConnection(
+      0,
+      1,
+      0,
+      Math.floor(new Date().getTime() / 1000),
+      Math.floor(+new Date() / 1000) + 14 * 24 * 60 * 60,
+    );
+    await firstConnection.wait();
   });
 });
