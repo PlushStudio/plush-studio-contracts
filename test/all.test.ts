@@ -506,7 +506,7 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await secondConnection.wait();
   });
 
-  it('Plush Origin -> Check unapprove connection', async () => {
+  it('Plush Origin -> Check unapproved connection', async () => {
     const getConnectionData = await plushOrigin.getConnectionById(3);
 
     expect(getConnectionData.lifespanParentId).to.eql(BigNumber.from(2));
