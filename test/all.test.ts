@@ -479,6 +479,11 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       await signers[0].getAddress(),
     );
     await mintSecondToken.wait();
+
+    const mintThirdToken = await lifespan.safeMint(
+      await signers[1].getAddress(),
+    );
+    await mintThirdToken.wait();
   });
 
   it('Plush Origin -> Add test connection', async () => {
@@ -490,5 +495,33 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       Math.floor(+new Date() / 1000) + 14 * 24 * 60 * 60,
     );
     await firstConnection.wait();
+
+    const secondConnection = await plushOrigin.addConnection(
+      0,
+      2,
+      0,
+      Math.floor(new Date().getTime() / 1000),
+      Math.floor(+new Date() / 1000) + 14 * 24 * 60 * 60,
+    );
+    await secondConnection.wait();
+  });
+
+  it('Plush Origin -> Check unapprove connection', async () => {
+    const getConnectionData = await plushOrigin.getConnectionById(3);
+
+    expect(getConnectionData.lifespanParentId).to.eql(BigNumber.from(2));
+    expect(getConnectionData.lifespanChildId).to.eql(BigNumber.from(0));
+    expect(getConnectionData.typeConnectionId).to.eql(BigNumber.from(2));
+    expect(getConnectionData.isActive).to.eql(false);
+  });
+
+  it('Plush Origin -> Approve connection', async () => {
+    const approveConnection = await plushOrigin
+      .connect(signers[1])
+      .approveConnection(2, 0);
+    await approveConnection.wait();
+
+    const getConnectionData = await plushOrigin.getConnectionById(3);
+    expect(getConnectionData.isActive).to.eql(true);
   });
 });
