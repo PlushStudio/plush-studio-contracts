@@ -486,6 +486,24 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     await mintThirdToken.wait();
   });
 
+  it('PlushOrigin -> Checking role assignments', async () => {
+    expect(
+      await plushOrigin.hasRole(
+        ethers.constants.HashZero,
+        await signers[0].getAddress(),
+      ),
+    ).to.eql(true); // ADMIN role
+    expect(
+      await plushOrigin.hasRole(OPERATOR_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
+    expect(
+      await plushOrigin.hasRole(PAUSER_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
+    expect(
+      await plushOrigin.hasRole(UPGRADER_ROLE, await signers[0].getAddress()),
+    ).to.eql(true);
+  });
+
   it('Plush Origin -> Add test connection', async () => {
     const firstConnection = await plushOrigin.addConnection(
       0,
