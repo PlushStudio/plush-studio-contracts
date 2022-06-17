@@ -455,37 +455,6 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
   });
 
-  it('Plush Origin -> Add basic connection types', async () => {
-    const addConnectionType1 = await plushOrigin.addConnectionType(0, 2);
-    await addConnectionType1.wait();
-
-    const addConnectionType2 = await plushOrigin.addConnectionType(1, 1);
-    await addConnectionType2.wait();
-
-    const addConnectionType3 = await plushOrigin.addConnectionType(2, 0);
-    await addConnectionType3.wait();
-
-    const addConnectionType4 = await plushOrigin.addConnectionType(3, 3);
-    await addConnectionType4.wait();
-  });
-
-  it('LifeSpan -> Mint test tokens for connection', async () => {
-    const mintFirstToken = await lifespan.safeMint(
-      await signers[0].getAddress(),
-    );
-    await mintFirstToken.wait();
-
-    const mintSecondToken = await lifespan.safeMint(
-      await signers[0].getAddress(),
-    );
-    await mintSecondToken.wait();
-
-    const mintThirdToken = await lifespan.safeMint(
-      await signers[1].getAddress(),
-    );
-    await mintThirdToken.wait();
-  });
-
   it('PlushOrigin -> Checking role assignments', async () => {
     expect(
       await plushOrigin.hasRole(
@@ -502,6 +471,37 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     expect(
       await plushOrigin.hasRole(UPGRADER_ROLE, await signers[0].getAddress()),
     ).to.eql(true);
+  });
+
+  it('Plush Origin -> Add basic connection types', async () => {
+    const addConnectionType1 = await plushOrigin.addConnectionType(0, 2);
+    await addConnectionType1.wait();
+
+    const addConnectionType2 = await plushOrigin.addConnectionType(1, 1);
+    await addConnectionType2.wait();
+
+    const addConnectionType3 = await plushOrigin.addConnectionType(2, 0);
+    await addConnectionType3.wait();
+
+    const addConnectionType4 = await plushOrigin.addConnectionType(3, 3);
+    await addConnectionType4.wait();
+  });
+
+  it('LifeSpan -> Mint test tokens for test Plush Origin connection', async () => {
+    const mintFirstToken = await lifespan.safeMint(
+      await signers[0].getAddress(),
+    );
+    await mintFirstToken.wait();
+
+    const mintSecondToken = await lifespan.safeMint(
+      await signers[0].getAddress(),
+    );
+    await mintSecondToken.wait();
+
+    const mintThirdToken = await lifespan.safeMint(
+      await signers[1].getAddress(),
+    );
+    await mintThirdToken.wait();
   });
 
   it('Plush Origin -> Add test connection', async () => {
