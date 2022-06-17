@@ -496,6 +496,13 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
     await firstConnection.wait();
 
+    const getFirstConnectionData = await plushOrigin.getConnectionById(0);
+
+    expect(getFirstConnectionData.lifespanParentId).to.eql(BigNumber.from(0));
+    expect(getFirstConnectionData.lifespanChildId).to.eql(BigNumber.from(1));
+    expect(getFirstConnectionData.typeConnectionId).to.eql(BigNumber.from(0));
+    expect(getFirstConnectionData.isActive).to.eql(true);
+
     const secondConnection = await plushOrigin.addConnection(
       0,
       2,
@@ -504,6 +511,13 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       Math.floor(+new Date() / 1000) + 14 * 24 * 60 * 60,
     );
     await secondConnection.wait();
+
+    /*    const getSecondConnectionData = await plushOrigin.getConnectionById(1);
+
+    expect(getSecondConnectionData.lifespanParentId).to.eql(BigNumber.from(1));
+    expect(getSecondConnectionData.lifespanChildId).to.eql(BigNumber.from(0));
+    expect(getSecondConnectionData.typeConnectionId).to.eql(BigNumber.from(2));
+    expect(getSecondConnectionData.isActive).to.eql(true);*/
   });
 
   it('Plush Origin -> Check unapproved connection', async () => {
