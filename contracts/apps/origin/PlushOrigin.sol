@@ -207,6 +207,7 @@ contract PlushOrigin is
             "Connection exist"
         );
 
+        bool isActiveConnection = true;
         ConnectionType memory connectionType = getConnectionType(
             typeConnectionId
         );
@@ -217,17 +218,21 @@ contract PlushOrigin is
             connectionType.id,
             dateStart,
             dateEnd,
-            true
+            isActiveConnection
         );
 
         if (!isConnectionExist(lifespanChildId, lifespanParentId)) {
+            if(lifespan.ownerOf(lifespanParentId) != lifespan.ownerOf(lifespanChildId)){
+                isActiveConnection = false;
+            }
+
             addConnectionToDB(
                 lifespanChildId,
                 lifespanParentId,
                 connectionType.swapId,
                 dateStart,
                 dateEnd,
-                false
+                isActiveConnection
             );
         }
     }
