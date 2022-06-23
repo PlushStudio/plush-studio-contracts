@@ -74,7 +74,7 @@ contract PlushOrigin is
         for (uint256 i = 0; i < idsByLifespan.length; i++) {
             Connection memory connection = connections[idsByLifespan[i]];
 
-            if (connection.isDeleted == false) {
+            if (!connection.isDeleted) {
                 origin[counter] = idsByLifespan[i];
                 counter++;
             }
@@ -109,11 +109,11 @@ contract PlushOrigin is
     ) external {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            "No rights to lifespan token"
+            "No rights to LifeSpan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            "Connection not exist"
+            "Connection doesn't exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -145,11 +145,11 @@ contract PlushOrigin is
     ) external {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            "No rights to lifespan token"
+            "No rights to LifeSpan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            "Connection not exist"
+            "Connection doesn't exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -169,7 +169,7 @@ contract PlushOrigin is
     }
 
     /**
-     * @notice Add new connection Lifespan
+     * @notice Add new connection LifeSpan
      * @param lifespanParentId id ERC721 parent token
      * @param lifespanChildId id ERC721 child token
      * @param typeConnectionId type of connection type
@@ -195,7 +195,7 @@ contract PlushOrigin is
         );
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            "No rights to lifespan token"
+            "No rights to LifeSpan token"
         );
         require(lifespanParentId != lifespanChildId, "Connection not possible");
         require(
@@ -204,7 +204,7 @@ contract PlushOrigin is
         );
         require(
             !isConnectionExist(lifespanParentId, lifespanChildId),
-            "Connection exist"
+            "Connection already exist"
         );
 
         bool isActiveConnection = true;
@@ -222,7 +222,10 @@ contract PlushOrigin is
         );
 
         if (!isConnectionExist(lifespanChildId, lifespanParentId)) {
-            if(lifespan.ownerOf(lifespanParentId) != lifespan.ownerOf(lifespanChildId)){
+            if (
+                lifespan.ownerOf(lifespanParentId) !=
+                lifespan.ownerOf(lifespanChildId)
+            ) {
                 isActiveConnection = false;
             }
 
@@ -247,11 +250,11 @@ contract PlushOrigin is
     {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            "No rights to lifespan token"
+            "No rights to LifeSpan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            "Connection not exist"
+            "Connection doesn't exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -283,11 +286,11 @@ contract PlushOrigin is
     ) external {
         require(
             lifespan.ownerOf(lifespanParentId) == msg.sender,
-            "No rights to lifespan token"
+            "No rights to LifeSpan token"
         );
         require(
             isConnectionExist(lifespanParentId, lifespanChildId),
-            "Connection not exist"
+            "Connection doesn't exist"
         );
 
         uint256[] memory idsByLifespan = connectionsById[lifespanParentId];
@@ -341,7 +344,7 @@ contract PlushOrigin is
     {
         require(
             isConnectionTypeExist(typeConnectionId),
-            "Connection type not exist"
+            "Connection doesn't exist"
         );
 
         for (uint256 i = 0; i < connectionsTypes.length; i++) {
@@ -357,27 +360,26 @@ contract PlushOrigin is
      *         PRIVATE FUNCTIONS         *
      **************************************/
 
-
     /**
      * @notice Get connection type by id
      * @param typeConnectionId id type of connection
      */
     function getConnectionType(uint256 typeConnectionId)
-    private
-    view
-    returns (ConnectionType memory)
+        private
+        view
+        returns (ConnectionType memory)
     {
-        ConnectionType memory temp;
+        ConnectionType memory connectionType;
 
         for (uint256 i = 0; i < connectionsTypes.length; i++) {
             if (connectionsTypes[i].id == typeConnectionId) {
-                temp = connectionsTypes[i];
+                connectionType = connectionsTypes[i];
 
                 break;
             }
         }
 
-        return temp;
+        return connectionType;
     }
 
     /**
@@ -393,7 +395,7 @@ contract PlushOrigin is
         for (uint256 i = 0; i < connectionsTypes.length; i++) {
             if (
                 connectionsTypes[i].id == typeConnectionId &&
-                connectionsTypes[i].isDeleted == false
+                !connectionsTypes[i].isDeleted
             ) {
                 return true;
             }
@@ -418,8 +420,7 @@ contract PlushOrigin is
             Connection memory parent = connections[idsByLifespan[i]];
 
             if (
-                parent.lifespanChildId == lifespanChildId &&
-                parent.isDeleted == false
+                parent.lifespanChildId == lifespanChildId && !parent.isDeleted
             ) {
                 return true;
             }
@@ -429,7 +430,7 @@ contract PlushOrigin is
     }
 
     /**
-     * @notice Add new connection Lifespan to DB
+     * @notice Add new connection LifeSpan to DB
      * @param lifespanParentId id ERC721 parent token
      * @param lifespanChildId id ERC721 child token
      * @param typeConnectionId type of connection type
@@ -457,8 +458,7 @@ contract PlushOrigin is
 
         connections.push(connection);
 
-        uint256 counter = connections.length - 1;
-        connectionsById[lifespanParentId].push(counter);
+        connectionsById[lifespanParentId].push(connections.length - 1);
 
         emit ConnectionAdded(
             msg.sender,
@@ -474,16 +474,16 @@ contract PlushOrigin is
      * @return count of not deleted connections
      */
     function getCountNotDeletedConnections(uint256[] memory connectionsParent)
-    private
-    view
-    returns (uint256)
+        private
+        view
+        returns (uint256)
     {
         uint256 count = 0;
 
         for (uint256 i = 0; i < connectionsParent.length; i++) {
             Connection memory connection = connections[connectionsParent[i]];
 
-            if (connection.isDeleted == false) {
+            if (!connection.isDeleted) {
                 count++;
             }
         }
