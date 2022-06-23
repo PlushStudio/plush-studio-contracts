@@ -2,7 +2,6 @@
 pragma solidity ^0.8.4;
 
 interface IPlushGetTree {
-
     // Trees available for purchase
     struct Tree {
         bytes32 treeType;
@@ -23,7 +22,11 @@ interface IPlushGetTree {
      * @param price Cost per unit in PLSH (price in wei)
      * @param count The number of available trees for purchase of this type
      */
-    function addTreeType(bytes32 treeType, uint256 price, uint256 count) external;
+    function addTreeType(
+        bytes32 treeType,
+        uint256 price,
+        uint256 count
+    ) external;
 
     /**
      * @notice Remove tree type in contract memory
@@ -34,27 +37,30 @@ interface IPlushGetTree {
     /**
      * @notice Get all types in string
      */
-    function getTreesTypes() external view returns(string memory);
+    function getTreesTypes() external view returns (string memory);
 
     /**
      * @notice Get tree info
      * @param treeType Tree type in bytes32
      */
-    function getTreeTypeInfo(bytes32 treeType) external view returns (Tree memory info);
+    function getTreeTypeInfo(bytes32 treeType)
+        external
+        view
+        returns (Tree memory info);
 
     /**
      * @notice Get tree type count
      * @param treeType Tree type in bytes32
      * @return Count of trees of a given type
      */
-    function getTreeTypeCount(bytes32 treeType) external view returns(uint256);
+    function getTreeTypeCount(bytes32 treeType) external view returns (uint256);
 
     /**
      * @notice Get tree type price
      * @param treeType Tree type in bytes32
      * @return The cost of a tree of a given type in wei
      */
-    function getTreeTypePrice(bytes32 treeType) external view returns(uint256);
+    function getTreeTypePrice(bytes32 treeType) external view returns (uint256);
 
     /**
      * @notice Set tree type price
@@ -77,6 +83,10 @@ interface IPlushGetTree {
      */
     function mint(bytes32 treeType, address mintAddress) external;
 
+    /****************************************
+     *                EVENTS                *
+     ****************************************/
+
     /// @notice Emitted when a tree is bought
     event TreeBought(
         address indexed buyer,
@@ -86,26 +96,14 @@ interface IPlushGetTree {
     );
 
     /// @notice Emitted when a tree type was added
-    event TreeAdded(
-        bytes32 indexed treeType,
-        uint256 price,
-        uint256 count
-    );
+    event TreeAdded(bytes32 indexed treeType, uint256 price, uint256 count);
 
     /// @notice Emitted when a tree type was removed
-    event TreeRemoved(
-        bytes32 indexed treeType
-    );
+    event TreeRemoved(bytes32 indexed treeType);
 
     /// @notice Emitted when a tree type count changed
-    event TreeCountChanged(
-        bytes32 indexed treeType,
-        uint256 count
-    );
+    event TreeCountChanged(bytes32 indexed treeType, uint256 count);
 
     /// @notice Emitted when a tree type price changed
-    event TreePriceChanged(
-        bytes32 indexed treeType,
-        uint256 price
-    );
+    event TreePriceChanged(bytes32 indexed treeType, uint256 price);
 }
