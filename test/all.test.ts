@@ -519,7 +519,7 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     expect(getFirstConnectionData.lifespanParentId).to.eql(BigNumber.from(0));
     expect(getFirstConnectionData.lifespanChildId).to.eql(BigNumber.from(1));
     expect(getFirstConnectionData.typeConnectionId).to.eql(BigNumber.from(0));
-    expect(getFirstConnectionData.isActive).to.eql(true);
+    expect(getFirstConnectionData.isActive).to.eql(true); // check auto-connect if user have two tokens
 
     const secondConnection = await plushOrigin.addConnection(
       0,
@@ -530,12 +530,12 @@ describe('Launching the testing of the Plush Studio contracts', () => {
     );
     await secondConnection.wait();
 
-    /*    const getSecondConnectionData = await plushOrigin.getConnectionById(1);
+    const getSecondConnectionData = await plushOrigin.getConnectionById(1);
 
     expect(getSecondConnectionData.lifespanParentId).to.eql(BigNumber.from(1));
     expect(getSecondConnectionData.lifespanChildId).to.eql(BigNumber.from(0));
     expect(getSecondConnectionData.typeConnectionId).to.eql(BigNumber.from(2));
-    expect(getSecondConnectionData.isActive).to.eql(true);*/
+    expect(getSecondConnectionData.isActive).to.eql(true);
   });
 
   it('Plush Origin -> Check unapproved connection', async () => {
