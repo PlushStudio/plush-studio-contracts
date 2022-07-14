@@ -83,9 +83,16 @@ describe('Launching the testing of the Plush Studio contracts', () => {
 
   it('[Deploy contract] Plush Protocol – LifeSpan', async () => {
     LifeSpanFactory = await ethers.getContractFactory('LifeSpan');
-    lifespan = (await upgrades.deployProxy(LifeSpanFactory, {
-      kind: 'uups',
-    })) as LifeSpan;
+    lifespan = (await upgrades.deployProxy(
+      LifeSpanFactory,
+      [
+        'https://home.plush.dev/token/',
+        'https://api.plush.dev/user/tokens/render',
+      ],
+      {
+        kind: 'uups',
+      },
+    )) as LifeSpan;
     await lifespan.deployed();
   });
 
@@ -175,6 +182,14 @@ describe('Launching the testing of the Plush Studio contracts', () => {
       },
     )) as PlushOrigin;
     await plushOrigin.deployed();
+  });
+
+  it('[LifeSpan] -> Add genders', async () => {
+    const male = await lifespan.addGender(0, 'MALE'); // MALE gender
+    await male.wait();
+
+    const female = await lifespan.addGender(1, 'FEMALE'); // FEMALE gender
+    await female.wait();
   });
 
   it('[Plush Protocol] Connect PlushForest controller to ecosystem', async () => {
@@ -490,16 +505,25 @@ describe('Launching the testing of the Plush Studio contracts', () => {
   it('LifeSpan -> Mint test tokens for test Plush Origin connection', async () => {
     const mintFirstToken = await lifespan.safeMint(
       await signers[0].getAddress(),
+      'Tester',
+      0,
+      918606632,
     );
     await mintFirstToken.wait();
 
     const mintSecondToken = await lifespan.safeMint(
       await signers[0].getAddress(),
+      'Testik',
+      1,
+      918406632,
     );
     await mintSecondToken.wait();
 
     const mintThirdToken = await lifespan.safeMint(
       await signers[1].getAddress(),
+      'Testik',
+      0,
+      918306632,
     );
     await mintThirdToken.wait();
   });
